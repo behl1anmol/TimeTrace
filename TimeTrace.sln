@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "timetrace.ui", "timetrace.ui\timetrace.ui.csproj", "{A8FE87AD-E0D5-4EEB-9998-E19D70F925FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "timetrace.library", "timetrace.library\timetrace.library.csproj", "{A10A07CC-B951-4AEE-85E6-A94E7397F52B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EA44446-811C-46DB-8E8C-58469E7292D5}"
+	ProjectSection(SolutionItems) = preProject
+		CONTRIBUTING.md = CONTRIBUTING.md
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8FE87AD-E0D5-4EEB-9998-E19D70F925FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8FE87AD-E0D5-4EEB-9998-E19D70F925FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8FE87AD-E0D5-4EEB-9998-E19D70F925FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8FE87AD-E0D5-4EEB-9998-E19D70F925FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A10A07CC-B951-4AEE-85E6-A94E7397F52B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A10A07CC-B951-4AEE-85E6-A94E7397F52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A10A07CC-B951-4AEE-85E6-A94E7397F52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A10A07CC-B951-4AEE-85E6-A94E7397F52B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5901B0EB-7129-468F-8700-84AC5E443D23}
+	EndGlobalSection
+EndGlobal
