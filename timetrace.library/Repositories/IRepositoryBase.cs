@@ -13,4 +13,5 @@ public interface IRepositoryBase
     bool Exists<TE>(TE entity) where TE : class;
     TE? Find<TE>(Expression<Func<TE,bool>> expression) where TE : class;
     IEnumerable<TE> FindAll<TE>(Expression<Func<TE, bool>> expression) where TE : class;
+    IEnumerable<TE> FetchAll<TE>() where TE : class;
 }

@@ -8,15 +8,22 @@ namespace timetrace.library.Repositories;
 /// </summary>
 public interface IConfigurationRepository : IRepositoryBase
 {
+    #region ConfigurationSetting
     /// <summary>
-    /// Adds a new configuration setting to the database. If the configuration setting is already present this functions returns the existing configuration setting.
+    /// Adds a new configuration setting to the database. 
+    /// If the configuration setting is already present this functions returns the existing configuration setting.
+    /// If the configuration setting is not present, it will be added along with a default configuration setting detail.
+    /// The default configuration setting detail will have the Key as "Default" and Value as "null".
     /// </summary>
     /// <param name="configurationSetting">The configuration setting to add.</param>
     /// <returns>The added configuration setting.</returns>
     ConfigurationSetting AddConfigurationSetting(ConfigurationSetting configurationSetting);
 
     /// <summary>
-    /// Adds a new configuration setting to the database. If the configuration setting is already present this functions returns the existing configuration setting.
+    /// Adds a new configuration setting to the database. 
+    /// If the configuration setting is already present this functions returns the existing configuration setting.
+    /// If the configuration setting is not present, it will be added along with a default configuration setting detail.
+    /// The default configuration setting detail will have the Key as "Default" and Value as "null".
     /// </summary>
     /// <param name="index">The configuration setting index to add.</param>
     /// <returns>The added configuration setting.</returns>
@@ -26,14 +33,22 @@ public interface IConfigurationRepository : IRepositoryBase
     /// Fetches all the configuration setting indexes from the database.
     /// </summary>
     /// <returns>A list of configuration setting indexes.</returns>
-    List<ConfigurationSetting> FetchAllConfigurationSettingIndexes();
+    List<string> FetchAllConfigurationSettingIndexes();
 
     /// <summary>
     /// Deletes a configuration setting index from the database.
+    /// Cascade delete is enabled for the configuration setting details.
     /// </summary>
     /// <param name="index">The index of the configuration setting to delete.</param>
     /// <returns>True if the configuration setting index was deleted successfully, otherwise false.</returns>
     bool DeleteConfigurationSettingIndex(string index);
+
+    /// <summary>
+    /// Deletes a configuration setting from the database.
+    /// Cascade delete is enabled for the configuration setting details.
+    /// </summary>
+    /// <param name="configurationSetting">The configuration setting to delete.</param>
+    void DeleteConfigurationSetting(ConfigurationSetting configurationSetting);
 
     /// <summary>
     /// Updates a configuration setting in the database.
@@ -43,11 +58,12 @@ public interface IConfigurationRepository : IRepositoryBase
     ConfigurationSetting UpdateConfigurationSetting(ConfigurationSetting configurationSetting);
 
     /// <summary>
-    /// Adds a default configuration setting detail for the specified index. The default configuration setting detail will have the Key as "Default" and Value as "null"
+    /// Updates the index of a configuration setting in the database.
     /// </summary>
-    /// <param name="index">The index of the configuration setting.</param>
-    /// <returns>The added default configuration setting detail.</returns>
-    ConfigurationSettingDetail AddDefaultConfigurationSettingDetail(string index);
+    ConfigurationSetting UpdateConfigurationSettingIndex(string oldKey, string newKey);
+    #endregion
+
+    #region ConfigurationSettingDetail
 
     /// <summary>
     /// Adds a configuration setting detail with the specified key and value for the specified index. If the configuration setting with the index is not present, it will be added.
@@ -70,15 +86,15 @@ public interface IConfigurationRepository : IRepositoryBase
     /// </summary>
     /// <param name="index">The index of the configuration setting.</param>
     /// <param name="key">The key of the configuration setting detail.</param>
-    /// <returns>The configuration setting detail with the specified key and index.</returns>
-    ConfigurationSettingDetail FetchConfigurationSettingValueByKeyIndex(string index, string key);
+    /// <returns>The configuration setting detail value for the specified key and index. If the key does not exist return default value.</returns>
+    string? FetchConfigurationSettingValueByKeyIndex(string index, string key);
 
     /// <summary>
     /// Fetches the configuration setting detail key-value pair by the specified index.
     /// </summary>
     /// <param name="index">The index of the configuration setting.</param>
-    /// <returns>A key-value pair for the specified index.</returns>
-    KeyValuePair<string?,string?> FetchConfigurationSettingKeyValueByIndex(string index);
+    /// <returns>A dictionary of key and value for the specified index.</returns>
+    Dictionary<string, string?> FetchConfigurationSettingKeyValueByIndex(string index);
 
     /// <summary>
     /// Updates a configuration setting detail in the database.
@@ -116,6 +132,6 @@ public interface IConfigurationRepository : IRepositoryBase
     /// Deletes a configuration setting detail from the database.
     /// </summary>
     /// <param name="configurationSettingDetail">The configuration setting detail to delete.</param>
-    /// <returns>True if the configuration setting detail was deleted successfully, otherwise false.</returns>
-    bool DeleteConfigurationSettingDetail(ConfigurationSettingDetail configurationSettingDetail);
+    void DeleteConfigurationSettingDetail(ConfigurationSettingDetail configurationSettingDetail);
+    #endregion
 }

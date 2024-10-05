@@ -60,6 +60,10 @@ public class RepositoryBase : IRepositoryBase
     {
         return DbContext.Set<TE>().Where(expression).ToList();
     }
+    public IEnumerable<TE> FetchAll<TE>() where TE : class
+    {
+        return DbContext.Set<TE>().ToList();
+    }
 
     public TE Update<TE>(TE entity) where TE : class
     {

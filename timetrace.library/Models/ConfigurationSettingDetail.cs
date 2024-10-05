@@ -18,7 +18,7 @@ public class ConfigurationSettingDetail
         get; set;
     }
 
-    public string? ConfigurationSettingKey
+    public string ConfigurationSettingKey
     {
         get; set;
     }
