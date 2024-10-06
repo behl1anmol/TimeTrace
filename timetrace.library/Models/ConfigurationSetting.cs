@@ -25,7 +25,7 @@ public class ConfigurationSetting
         get; set;
     }
 
-    public ICollection<ConfigurationSettingDetail> ConfigurationSettingDetails
+    public virtual ICollection<ConfigurationSettingDetail> ConfigurationSettingDetails
     {
         get; set;
     }

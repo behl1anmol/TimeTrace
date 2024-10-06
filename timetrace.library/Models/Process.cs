@@ -25,7 +25,7 @@ public class Process
         get; set;
     }
 
-    public ICollection<ProcessDetail> ProcessDetails
+    public virtual ICollection<ProcessDetail> ProcessDetails
     {
         get; set;
     }

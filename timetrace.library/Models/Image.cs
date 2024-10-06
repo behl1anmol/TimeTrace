@@ -32,7 +32,7 @@ public class Image
     }
 
     [ForeignKey(nameof(ProcessDetailId))]
-    public ProcessDetail ProcessDetail
+    public virtual ProcessDetail ProcessDetail
     {
         get; set;
     }

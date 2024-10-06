@@ -30,12 +30,12 @@ public class ProcessDetail
     }
 
     [ForeignKey(nameof(ProcessId))]
-    public Process Process
+    public virtual Process Process
     {
         get; set;
     }
 
-    public ICollection<Image> Images
+    public virtual ICollection<Image> Images
     {
         get; set;
     }

@@ -24,7 +24,7 @@ public class ConfigurationSettingDetail
     }
 
     [ForeignKey(nameof(ConfigurationSettingId))]
-    public ConfigurationSetting ConfigurationSetting
+    public virtual ConfigurationSetting ConfigurationSetting
     {
         get; set;
     }
