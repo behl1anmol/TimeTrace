@@ -19,8 +19,8 @@ public class Image
         get; set;
     }
 
-    [Required]
-    public string ImagePath
+    //keeping it nullable to capture the imageID before saving image in DB
+    public string? ImagePath
     {
         get; set;
     }
@@ -40,6 +40,13 @@ public class Image
     public int ProcessDetailId
     {
         get; set;
+    }
+
+    [Required]
+    public Guid ImageGuid
+    {
+        get;
+        set;
     }
 
 }
