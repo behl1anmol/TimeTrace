@@ -19,8 +19,8 @@ public class Image
         get; set;
     }
 
-    [Required]
-    public string ImagePath
+    // The image path is nullable, indicating that if it is null, the image has been deleted or there was an error in saving the image
+    public string? ImagePath
     {
         get; set;
     }
@@ -40,6 +40,13 @@ public class Image
     public int ProcessDetailId
     {
         get; set;
+    }
+
+    [Required]
+    public Guid ImageGuid
+    {
+        get;
+        set;
     }
 
 }

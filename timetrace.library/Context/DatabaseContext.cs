@@ -133,7 +133,7 @@ public class DatabaseContext : DbContext
 
         #region Image
         modelBuilder.Entity<Image>()
-            .HasIndex(i => i.Name)
+            .HasIndex(i => i.ImageId)
             .IsUnique();
 
         modelBuilder.Entity<Image>()
@@ -149,7 +149,10 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<Image>()
             .Property(p => p.ImagePath)
-            .HasMaxLength(255)
+            .HasMaxLength(255);
+
+        modelBuilder.Entity<Image>()
+            .Property(p => p.ImageGuid)
             .IsRequired();
         #endregion
 
