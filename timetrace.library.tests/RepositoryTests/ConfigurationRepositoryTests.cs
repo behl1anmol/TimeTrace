@@ -4,7 +4,7 @@ using timetrace.library.Models;
 using timetrace.library.Repositories;
 using timetrace.library.tests.TestHelpers;
 
-namespace timetrace.library.tests.ConfigurationRepositoryTest;
+namespace timetrace.library.tests.RepositoryTests;
 
 [ConfigurationRepositoryCategory]
 [TestFixture]
