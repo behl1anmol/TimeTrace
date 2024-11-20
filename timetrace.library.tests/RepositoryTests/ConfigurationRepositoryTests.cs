@@ -6,7 +6,7 @@ using timetrace.library.tests.TestHelpers;
 
 namespace timetrace.library.tests.RepositoryTests;
 
-[ConfigurationRepositoryCategory]
+[TestCategory(nameof(ConfigurationRepositoryTests))]
 [TestFixture]
 public class ConfigurationRepositoryTests
 {
