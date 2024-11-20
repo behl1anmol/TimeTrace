@@ -21,6 +21,12 @@ public class RepositoryBase : IRepositoryBase
         DbContext.SaveChanges();
         return entity;
     }
+    public bool AddAll<TE>(IEnumerable<TE> entities) where TE : class
+    {
+        DbContext.Set<TE>().AddRange(entities);
+        var count = DbContext.SaveChanges();
+        return count > 0;
+    }
 
     public void Delete<TE>(TE entity) where TE : class
     {
@@ -60,6 +66,10 @@ public class RepositoryBase : IRepositoryBase
     {
         return DbContext.Set<TE>().Where(expression).ToList();
     }
+    public IEnumerable<TE> FindAll<TE>(Expression<Func<TE, bool>> expression, int pageSize, int page) where TE : class
+    {
+        return DbContext.Set<TE>().Where(expression).Skip(page * pageSize).Take(pageSize);
+    }
     public IEnumerable<TE> FetchAll<TE>() where TE : class
     {
         return DbContext.Set<TE>().ToList();
@@ -70,5 +80,11 @@ public class RepositoryBase : IRepositoryBase
         DbContext.Set<TE>().Update(entity);
         DbContext.SaveChanges();
         return entity;
+    }
+
+    public void UpdateAll<TE>(IEnumerable<TE> entities) where TE : class
+    {
+        DbContext.Set<TE>().UpdateRange(entities);
+        DbContext.SaveChanges();
     }
 }
