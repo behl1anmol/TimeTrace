@@ -37,9 +37,39 @@ public class ImageRepositoryTests
         _dbContext.Dispose();
     }
 
+    private Process CreateMockProcess()
+    {
+        var process = new Process
+        {
+            Name = "Test Process",
+            DateTimeStamp = DateTime.Now
+        };
+        _dbContext.Processes.Add(process);
+        _dbContext.SaveChanges();
+        return process;
+    }
+
+    private ProcessDetail CreateMockProcessDetail(int processId)
+    {
+        var processDetail = new ProcessDetail
+        {
+            ProcessId = processId,
+            Description = "Test Process Detail",
+            DateTimeStamp = DateTime.Now
+        };
+        _dbContext.ProcessDetails.Add(processDetail);
+        _dbContext.SaveChanges();
+        return processDetail;
+    }
+
     [Test, CustomizedAutoData]
     public void AddImage_ShouldAddNewImage(Image image)
     {
+        // Arrange
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
+        image.ProcessDetailId = processDetail.ProcessDetailId;
+
         // Act
         var result = _repository.AddImage(image);
 
@@ -53,6 +83,11 @@ public class ImageRepositoryTests
     [Test, CustomizedAutoData]
     public void AddImages_ShouldAddNewImages(List<Image> images)
     {
+        // Arrange
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
+        images.ForEach(i => i.ProcessDetailId = processDetail.ProcessDetailId);
+
         // Act
         var result = _repository.AddImages(images);
 
@@ -65,6 +100,9 @@ public class ImageRepositoryTests
     public void DeleteImage_ShouldDeleteImage(Image image)
     {
         // Arrange
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
+        image.ProcessDetailId = processDetail.ProcessDetailId;
         _dbContext.Images.Add(image);
         _dbContext.SaveChanges();
 
@@ -80,6 +118,9 @@ public class ImageRepositoryTests
     public void DeleteImages_ShouldDeleteImages(List<Image> images)
     {
         // Arrange
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
+        images.ForEach(i => i.ProcessDetailId = processDetail.ProcessDetailId);
         _dbContext.Images.AddRange(images);
         _dbContext.SaveChanges();
 
@@ -95,12 +136,14 @@ public class ImageRepositoryTests
     public void DeleteImagesByProcessDetailId_ShouldDeleteImages(int processDetailId, List<Image> images)
     {
         // Arrange
-        images.ForEach(i => i.ProcessDetailId = processDetailId);
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
+        images.ForEach(i => i.ProcessDetailId = processDetail.ProcessDetailId);
         _dbContext.Images.AddRange(images);
         _dbContext.SaveChanges();
 
         // Act
-        var result = _repository.DeleteImages(processDetailId);
+        var result = _repository.DeleteImages(processDetail.ProcessDetailId);
 
         // Assert
         Assert.That(result, Is.True);
@@ -111,6 +154,9 @@ public class ImageRepositoryTests
     public void GetImagesByExpression_ShouldReturnImages(Expression<Func<Image, bool>> expression, List<Image> images)
     {
         // Arrange
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
+        images.ForEach(i => i.ProcessDetailId = processDetail.ProcessDetailId);
         _dbContext.Images.AddRange(images);
         _dbContext.SaveChanges();
 
@@ -126,6 +172,10 @@ public class ImageRepositoryTests
     public void GetImagesByProcessDetail_ShouldReturnImages(ProcessDetail processDetail, List<Image> images)
     {
         // Arrange
+        var process = CreateMockProcess();
+        processDetail.ProcessId = process.ProcessId;
+        _dbContext.ProcessDetails.Add(processDetail);
+        _dbContext.SaveChanges();
         images.ForEach(i => i.ProcessDetailId = processDetail.ProcessDetailId);
         _dbContext.Images.AddRange(images);
         _dbContext.SaveChanges();
@@ -142,12 +192,14 @@ public class ImageRepositoryTests
     public void GetImagesByProcessDetailId_ShouldReturnImages(int processDetailId, List<Image> images)
     {
         // Arrange
-        images.ForEach(i => i.ProcessDetailId = processDetailId);
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
+        images.ForEach(i => i.ProcessDetailId = processDetail.ProcessDetailId);
         _dbContext.Images.AddRange(images);
         _dbContext.SaveChanges();
 
         // Act
-        var result = _repository.GetImages(processDetailId);
+        var result = _repository.GetImages(processDetail.ProcessDetailId);
 
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -158,7 +210,9 @@ public class ImageRepositoryTests
     public void GetImagesByProcessDetailIds_ShouldReturnImages(List<int> processDetailIds, List<Image> images)
     {
         // Arrange
-        images.ForEach(i => i.ProcessDetailId = processDetailIds.First());
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
+        images.ForEach(i => i.ProcessDetailId = processDetail.ProcessDetailId);
         _dbContext.Images.AddRange(images);
         _dbContext.SaveChanges();
 
@@ -174,10 +228,12 @@ public class ImageRepositoryTests
     public void UpdateAllImagePath_ShouldUpdateImagePaths()
     {
         // Arrange
+        var process = CreateMockProcess();
+        var processDetail = CreateMockProcessDetail(process.ProcessId);
         var images = new List<Image>
         {
-            new Image { ImageGuid = Guid.NewGuid(), Name = "Image1", ProcessDetailId = 1 },
-            new Image { ImageGuid = Guid.NewGuid(), Name = "Image2", ProcessDetailId = 1 }
+            new Image { ImageGuid = Guid.NewGuid(), Name = "Image1", ProcessDetailId = processDetail.ProcessDetailId },
+            new Image { ImageGuid = Guid.NewGuid(), Name = "Image2", ProcessDetailId = processDetail.ProcessDetailId }
         };
         _dbContext.Images.AddRange(images);
         _dbContext.SaveChanges();
