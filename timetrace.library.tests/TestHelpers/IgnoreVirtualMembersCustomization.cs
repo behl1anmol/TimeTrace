@@ -31,5 +31,5 @@ public class IgnoreVirtualMembersCustomization : ICustomization
 
             return new NoSpecimen();
         }
-    } 
+    }
 }

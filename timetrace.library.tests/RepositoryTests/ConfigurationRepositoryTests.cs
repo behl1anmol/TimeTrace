@@ -105,10 +105,10 @@ public class ConfigurationRepositoryTests
         Assert.That(2, Is.EqualTo(_dbContext.ConfigurationSettingDetails.Count()));
         Assert.That(result, Is.EqualTo(
             _dbContext.ConfigurationSettingDetails
-                .Where(csd=>csd.ConfigurationSettingKey.Equals(key)).FirstOrDefault()));
-        Assert.That(_dbContext.ConfigurationSettings.ToList().Exists(cs=>cs.ConfigurationSettingIndex.Equals(index)), Is.True);
+                .Where(csd => csd.ConfigurationSettingKey.Equals(key)).FirstOrDefault()));
+        Assert.That(_dbContext.ConfigurationSettings.ToList().Exists(cs => cs.ConfigurationSettingIndex.Equals(index)), Is.True);
         Assert.That(_dbContext.ConfigurationSettingDetails.ToList()
-            .Exists(csd=>csd.ConfigurationSettingKey.Equals("Default") 
+            .Exists(csd => csd.ConfigurationSettingKey.Equals("Default")
                          && csd.ConfigurationSettingValue == null), Is.True);
     }
 
@@ -165,7 +165,7 @@ public class ConfigurationRepositoryTests
         // Assert
         Assert.That(result, Is.Not.Null);
         //+1 because of the default detail
-        Assert.That((details.Count+1), Is.EqualTo(result.Count));
+        Assert.That((details.Count + 1), Is.EqualTo(result.Count));
     }
 
     [Test, CustomizedAutoData]

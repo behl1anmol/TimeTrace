@@ -1,6 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Reflection.Metadata;
-using Microsoft.EntityFrameworkCore;
 using timetrace.library.Context;
 using timetrace.library.Models;
 using timetrace.library.Utils;
@@ -33,7 +31,7 @@ public class ImageRepository : RepositoryBase, IImageRepository
         {
             base.DeleteAll<Image>(base.DbContext.Images);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new Exception(e.Message);
             return false;
@@ -108,7 +106,7 @@ public class ImageRepository : RepositoryBase, IImageRepository
     {
         var path = _configurationRepository.FetchConfigurationSettingValueByKeyIndex(ConfigSettingConstants.FilePathConfigSettingIndex, ConfigSettingConstants.ImagePathConfigSettingKey);
 
-        var fileName = imageName??$"{imageGuid}_{DateTime.Now:yyyyMMddHHmmss}.jpg";
+        var fileName = imageName ?? $"{imageGuid}_{DateTime.Now:yyyyMMddHHmmss}.jpg";
         var filePath = $"{path}/{fileName}";
         return (fileName, filePath);
     }

@@ -1,4 +1,3 @@
-using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using timetrace.library.Context;

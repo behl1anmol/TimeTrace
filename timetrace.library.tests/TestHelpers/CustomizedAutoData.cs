@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.NUnit4;
-using Microsoft.EntityFrameworkCore;
-using timetrace.library.Context;
-using timetrace.library.Repositories;
 
 namespace timetrace.library.tests.TestHelpers;
 
