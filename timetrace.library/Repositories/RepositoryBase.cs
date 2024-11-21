@@ -60,9 +60,10 @@ public class RepositoryBase : IRepositoryBase
     {
         return DbContext.Set<TE>().Where(expression).ToList();
     }
-    public IEnumerable<TE> FindAll<TE>(Expression<Func<TE, bool>> expression, int pageSize, int page) where TE : class
+    public List<TE> FindAll<TE>(Expression<Func<TE, bool>> expression, int pageSize = 100, int page = 1) where TE : class
     {
-        return DbContext.Set<TE>().Where(expression).Skip(page * pageSize).Take(pageSize);
+        var query = DbContext.Set<TE>().Where(expression).AsQueryable();
+        return query.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
     }
     public IEnumerable<TE> FetchAll<TE>() where TE : class
     {

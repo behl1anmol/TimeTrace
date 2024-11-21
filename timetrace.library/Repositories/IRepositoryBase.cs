@@ -104,5 +104,5 @@ public interface IRepositoryBase
     /// <param name="pageSize">The maximum number of entities per page.</param>
     /// <param name="page">The page number.</param>
     /// <returns>An enumerable collection of the found entities.</returns>
-    IEnumerable<TE> FindAll<TE>(Expression<Func<TE, bool>> expression, int pageSize, int page) where TE : class;
+    List<TE> FindAll<TE>(Expression<Func<TE, bool>> expression, int pageSize, int page) where TE : class;
 }

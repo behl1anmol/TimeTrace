@@ -80,19 +80,19 @@ public class ImageRepository : RepositoryBase, IImageRepository
     }
     public List<Image> GetImages(Expression<Func<Image, bool>> expression, int page = 1, int pageSize = 100)
     {
-        return base.FindAll(expression, pageSize, page).ToList();
+        return base.FindAll(expression, pageSize, page);
     }
     public List<Image> GetImages(ProcessDetail processDetail, int page = 1, int pageSize = 100)
     {
-        return base.FindAll<Image>(i => i.ProcessDetailId == processDetail.ProcessDetailId, pageSize, page).ToList();
+        return base.FindAll<Image>(i => i.ProcessDetailId == processDetail.ProcessDetailId, pageSize, page);
     }
     public List<Image> GetImages(int processDetailId, int page = 1, int pageSize = 100)
     {
-        return base.FindAll<Image>(i => i.ProcessDetailId == processDetailId, pageSize, page).ToList();
+        return base.FindAll<Image>(i => i.ProcessDetailId == processDetailId, pageSize, page);
     }
     public List<Image> GetImages(List<int> processDetailId, int page = 1, int pageSize = 100)
     {
-        return base.FindAll<Image>(i => processDetailId.Contains(i.ProcessDetailId), pageSize, page).ToList();
+        return base.FindAll<Image>(i => processDetailId.Contains(i.ProcessDetailId), pageSize, page);
     }
 
     /// <summary>
