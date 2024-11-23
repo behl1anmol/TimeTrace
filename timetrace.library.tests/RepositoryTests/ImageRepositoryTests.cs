@@ -54,7 +54,7 @@ public class ImageRepositoryTests
         Assert.That(result, Is.Not.Null);
         Assert.That(result.ImageGuid, Is.Not.EqualTo(Guid.Empty));
         Assert.That(result.ImagePath, Is.Not.Null);
-        Assert.That(1, Is.EqualTo(_dbContext.Images.Count()));
+        Assert.That(_dbContext.Images.Count(), Is.EqualTo(1));
     }
 
     [Test, CustomizedAutoData]
@@ -89,7 +89,7 @@ public class ImageRepositoryTests
 
         // Assert
         Assert.That(result, Is.True);
-        Assert.That(0, Is.EqualTo(_dbContext.Images.Count()));
+        Assert.That(_dbContext.Images.Count(), Is.EqualTo(0));
     }
 
     [Test, CustomizedAutoData]
@@ -106,7 +106,7 @@ public class ImageRepositoryTests
 
         // Assert
         Assert.That(result, Is.True);
-        Assert.That(0, Is.EqualTo(_dbContext.Images.Count()));
+        Assert.That(_dbContext.Images.Count(), Is.EqualTo(0));
     }
 
     [Test, CustomizedAutoData]
@@ -123,7 +123,7 @@ public class ImageRepositoryTests
 
         // Assert
         Assert.That(result, Is.True);
-        Assert.That(0, Is.EqualTo(_dbContext.Images.Count()));
+        Assert.That(_dbContext.Images.Count(), Is.EqualTo(0));
     }
 
     [Test, CustomizedAutoData]
@@ -218,6 +218,153 @@ public class ImageRepositoryTests
         // Assert
         Assert.That(result, Is.True);
         Assert.That(_dbContext.Images.All(i => i.ImagePath != null), Is.True);
+    }
+
+    [Test, CustomizedAutoData]
+    public void ValidateForeignKeyRelations_ShouldThrowExceptionWhenProcessDetailIdIsZero(Image image)
+    {
+        // Arrange
+        image.ProcessDetailId = 0;
+
+        // Act
+        void action() => _repository.Add(image);
+
+        // Assert
+        Assert.That(action, Throws.Exception);
+    }
+
+    [Test, CustomizedAutoData]
+    public void ValidateForeignKeyRelations_ShouldThrowExceptionWhenProcessDetailDoesNotExists(Image image, Process process, ProcessDetail processDetail)
+    {
+        // Arrange
+        image.ProcessDetailId = 100;
+
+        // Act
+        void action() => _repository.Add(image);
+
+        // Assert
+        Assert.That(action, Throws.Exception);
+    }
+
+    [Test, CustomizedAutoData]
+    public void DeleteAllImages_ShouldThrowExceptionWhenErrorOccurs()
+    {
+        // Arrange
+        _dbContext.Database.EnsureDeleted();
+
+        // Act
+        void action() => _repository.DeleteAllImages();
+
+        // Assert
+        Assert.That(action, Throws.Exception);
+    }
+
+    [Test, CustomizedAutoData]
+    public void DeleteImage_ShouldThrowExceptionWhenErrorOccurs(Image image)
+    {
+        // Arrange
+        _dbContext.Database.EnsureDeleted();
+
+        // Act
+        void action() => _repository.DeleteImage(image);
+
+        // Assert
+        Assert.That(action, Throws.Exception);
+    }
+
+    [Test, CustomizedAutoData]
+    public void DeleteImages_ShouldThrowExceptionWhenErrorOccurs(List<Image> images)
+    {
+        // Arrange
+        _dbContext.Database.EnsureDeleted();
+
+        // Act
+        void action() => _repository.DeleteImages(images);
+
+        // Assert
+        Assert.That(action, Throws.Exception);
+    }
+
+    [Test, CustomizedAutoData]
+    public void DeleteImagesByProcessDetailId_ShouldThrowExceptionWhenErrorOccurs(int processDetailId)
+    {
+        // Arrange
+        _dbContext.Database.EnsureDeleted();
+
+        // Act
+        void action() => _repository.DeleteImages(processDetailId);
+
+        // Assert
+        Assert.That(action, Throws.Exception);
+    }
+
+    [Test, CustomizedAutoData]
+    public void GetImagesByProcessDetail_ShouldReturnNoImages(ProcessDetail processDetail, Process process)
+    {
+        // Arrange
+        processDetail.ProcessId = process.ProcessId;
+        _dbContext.Processes.Add(process);
+        _dbContext.ProcessDetails.Add(processDetail);
+        _dbContext.SaveChanges();
+
+        // Act
+        var result = _repository.GetImages(processDetail);
+
+        // Assert
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Count, Is.EqualTo(0));
+    }
+
+    [Test, CustomizedAutoData]
+    public void GetImagesByProcessDetailId_ShouldReturnNoImages(int processDetailId)
+    {
+        // Act
+        var result = _repository.GetImages(processDetailId);
+
+        // Assert
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Count, Is.EqualTo(0));
+    }
+
+    [Test, CustomizedAutoData]
+    public void GetImagesByProcessDetailIds_ShouldReturnNoImages(List<int> processDetailIds)
+    {
+        // Act
+        var result = _repository.GetImages(processDetailIds);
+
+        // Assert
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Count, Is.EqualTo(0));
+    }
+
+    [Test, CustomizedAutoData]
+    public void GetImagesByProcessDetails_ShouldReturnNoImages(List<ProcessDetail> processDetails, Process process)
+    {
+        // Arrange
+        processDetails.ForEach(pd => pd.ProcessId = process.ProcessId);
+        _dbContext.Processes.Add(process);
+        _dbContext.ProcessDetails.AddRange(processDetails);
+        _dbContext.SaveChanges();
+        
+        // Act
+        var result = _repository.GetImages(processDetails.Select(pd => pd.ProcessDetailId).ToList());
+
+        // Assert
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Count, Is.EqualTo(0));
+    }
+
+    [Test, CustomizedAutoData]
+    public void UpdateAllImagePath_ShouldThrowExceptionWhenErrorOccurs()
+    {
+        // Arrange
+        _dbContext.Database.EnsureDeleted();
+
+        // Act
+        void action() => _repository.UpdateAllImagePath();
+
+        // Assert
+        Assert.That(action, Throws.Exception);
     }
 
     private void SetupMockData(List<Image> images, Process process, ProcessDetail processDetails)

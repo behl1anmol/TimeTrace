@@ -117,17 +117,23 @@ public class ImageRepository : RepositoryBase, IImageRepository
     public bool UpdateAllImagePath()
     {
         const int batchSize = 1000;
-        var totalImages = base.FetchAll<Image>().Count();
-        for (var i = 0; i < totalImages; i += batchSize)
-        {
-            var imagesBatch = base.FetchAll<Image>().Skip(i).Take(batchSize).ToList();
-            foreach (var image in imagesBatch)
+        try{
+            var totalImages = base.FetchAll<Image>().Count();
+            for (var i = 0; i < totalImages; i += batchSize)
             {
-                (_, image.ImagePath) = CreateImagePathAndName(image.ImageGuid);
+                var imagesBatch = base.FetchAll<Image>().Skip(i).Take(batchSize).ToList();
+                foreach (var image in imagesBatch)
+                {
+                    (_, image.ImagePath) = CreateImagePathAndName(image.ImageGuid);
+                }
+                base.UpdateAll(imagesBatch);
             }
-            base.UpdateAll(imagesBatch);
+            return true;
         }
-        return true;
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
     
     private void ValidateForeignKeyRelations(Image image)
@@ -136,7 +142,7 @@ public class ImageRepository : RepositoryBase, IImageRepository
         {
             throw new Exception("ProcessDetailId is required");
         }
-        if (base.Exists<ProcessDetail>(pd=>pd.ProcessDetailId==image.ProcessDetailId))
+        if (!base.Exists<ProcessDetail>(pd=>pd.ProcessDetailId==image.ProcessDetailId))
         {
             throw new InvalidOperationException("Referenced Process Detail does not exists.");
         }
