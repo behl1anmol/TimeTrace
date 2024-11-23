@@ -18,11 +18,18 @@ public class ImageRepository : RepositoryBase, IImageRepository
         image.ImageGuid = Guid.NewGuid();
         (image.Name, image.ImagePath) = CreateImagePathAndName(image.ImageGuid);
 
+        ValidateForeignKeyRelations(image);
         return this.Add<Image>(image);
     }
 
     public bool AddImages(List<Image> images)
     {
+        foreach (var image in images)
+        {
+            image.ImageGuid = Guid.NewGuid();
+            (image.Name, image.ImagePath) = CreateImagePathAndName(image.ImageGuid);
+            ValidateForeignKeyRelations(image);
+        }
         return base.AddAll(images);
     }
     public bool DeleteAllImages()
@@ -34,7 +41,6 @@ public class ImageRepository : RepositoryBase, IImageRepository
         catch (Exception e)
         {
             throw new Exception(e.Message);
-            return false;
         }
         return true;
     }
@@ -47,7 +53,6 @@ public class ImageRepository : RepositoryBase, IImageRepository
         catch (Exception e)
         {
             throw new Exception(e.Message);
-            return false;
         }
         return true;
     }
@@ -60,7 +65,6 @@ public class ImageRepository : RepositoryBase, IImageRepository
         catch (Exception e)
         {
             throw new Exception(e.Message);
-            return false;
         }
         return true;
     }
@@ -73,7 +77,6 @@ public class ImageRepository : RepositoryBase, IImageRepository
         catch (Exception e)
         {
             throw new Exception(e.Message);
-            return false;
         }
         return true;
 
@@ -125,5 +128,17 @@ public class ImageRepository : RepositoryBase, IImageRepository
             base.UpdateAll(imagesBatch);
         }
         return true;
+    }
+    
+    private void ValidateForeignKeyRelations(Image image)
+    {
+        if (image.ProcessDetailId == 0)
+        {
+            throw new Exception("ProcessDetailId is required");
+        }
+        if (base.Exists<ProcessDetail>(pd=>pd.ProcessDetailId==image.ProcessDetailId))
+        {
+            throw new InvalidOperationException("Referenced Process Detail does not exists.");
+        }
     }
 }
