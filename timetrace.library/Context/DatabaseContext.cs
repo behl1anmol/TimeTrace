@@ -74,7 +74,7 @@ public class DatabaseContext : DbContext
             .HasForeignKey(i => i.ProcessDetailId);
 
         modelBuilder.Entity<ProcessDetail>()
-            .HasIndex(pd => pd.Description)
+            .HasIndex(pd => pd.ProcessDetailId)
             .IsUnique();
 
         modelBuilder.Entity<ProcessDetail>()
@@ -85,6 +85,7 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<ProcessDetail>()
             .Property(p => p.Description)
+            .IsRequired()
             .HasMaxLength(255);
 
         #endregion

@@ -30,8 +30,15 @@ public class RepositoryBase : IRepositoryBase
 
     public void DeleteAll<TE>(IEnumerable<TE> entities) where TE : class
     {
-        DbContext.Set<TE>().RemoveRange(entities);
-        DbContext.SaveChanges();
+        try
+        {
+            DbContext.Set<TE>().RemoveRange(entities);
+            DbContext.SaveChanges();
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Error deleting all entities of type {typeof(TE).Name}.", e);
+        }
     }
 
     public void DeleteAll<TE>(Expression<Func<TE, bool>> expression) where TE : class
@@ -39,6 +46,30 @@ public class RepositoryBase : IRepositoryBase
         var entities = DbContext.Set<TE>().Where(expression);
         DbContext.Set<TE>().RemoveRange(entities);
         DbContext.SaveChanges();
+    }
+
+    public bool DeleteAll<TE>() where TE : class
+    {
+        const int batchSize = 1000;
+        try
+        {
+            var dbSet = DbContext.Set<TE>();
+            
+            while (true)
+            {
+                var batch = dbSet.Take(batchSize).ToList();
+                if (!batch.Any())
+                    break;
+                    
+                dbSet.RemoveRange(batch);
+                DbContext.SaveChanges();
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Error deleting all entities of type {typeof(TE).Name}.", e);
+        }
     }
 
     public bool Exists<TE>(Expression<Func<TE, bool>> expression) where TE : class

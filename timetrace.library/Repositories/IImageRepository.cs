@@ -83,6 +83,13 @@ public interface IImageRepository : IRepositoryBase
     bool DeleteAllImages();
 
     /// <summary>
+    /// Deletes all images associated with a specific process detail.
+    /// </summary>
+    /// <param name="expression">The condition to match.</param>
+    /// <returns>True if the images were deleted successfully, false otherwise.</returns>
+    bool DeleteImages(Expression<Func<Image, bool>> expression);
+
+    /// <summary>
     /// Updates the image path for all images in the database.
     /// </summary>
     /// <returns>True if the image paths were updated successfully, false otherwise.</returns>

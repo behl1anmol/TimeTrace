@@ -58,6 +58,13 @@ public interface IRepositoryBase
     void DeleteAll<TE>(Expression<Func<TE, bool>> expression) where TE : class;
 
     /// <summary>
+    /// Deletes all entities from the repository.
+    /// </summary>
+    /// <typeparam name="TE"></typeparam>
+    /// <returns>True if all entities were deleted successfully, otherwise throws an error.</returns>
+    bool DeleteAll<TE>() where TE : class;
+
+    /// <summary>
     /// Checks if any entity exists in the repository based on a specified condition.
     /// </summary>
     /// <typeparam name="TE">The type of the entity.</typeparam>
