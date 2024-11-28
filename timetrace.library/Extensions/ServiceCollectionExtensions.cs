@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using timetrace.library.Context;
+using timetrace.library.Repositories;
 
 public static class ServiceCollectionExtensions
 {
@@ -15,6 +16,10 @@ public static class ServiceCollectionExtensions
         {
             options.UseSqlite(string.Format(connectionString, GetDbPath(), GetDbPassword()));
         });
+        services.AddTransient<IProcessRepository, ProcessRepository>();
+        services.AddTransient<IConfigurationRepository, ConfigurationRepository>();
+        services.AddTransient<IImageRepository, ImageRepository>();
+        services.AddTransient<IRepositoryBase, RepositoryBase>();
     }
 
     private static string GetDbPassword()
