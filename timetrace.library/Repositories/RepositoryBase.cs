@@ -24,8 +24,14 @@ public class RepositoryBase : IRepositoryBase
 
     public void Delete<TE>(TE entity) where TE : class
     {
-        DbContext.Set<TE>().Remove(entity);
-        DbContext.SaveChanges();
+        try{
+            DbContext.Set<TE>().Remove(entity);
+            DbContext.SaveChanges();
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Error deleting entity of type {typeof(TE).Name}.", e);
+        }
     }
 
     public void DeleteAll<TE>(IEnumerable<TE> entities) where TE : class
@@ -43,9 +49,16 @@ public class RepositoryBase : IRepositoryBase
 
     public void DeleteAll<TE>(Expression<Func<TE, bool>> expression) where TE : class
     {
-        var entities = DbContext.Set<TE>().Where(expression);
-        DbContext.Set<TE>().RemoveRange(entities);
-        DbContext.SaveChanges();
+        try
+        {
+            var entities = DbContext.Set<TE>().Where(expression);
+            DbContext.Set<TE>().RemoveRange(entities);
+            DbContext.SaveChanges();
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Error deleting all entities of type {typeof(TE).Name}.", e);
+        }
     }
 
     public bool DeleteAll<TE>() where TE : class
@@ -99,6 +112,11 @@ public class RepositoryBase : IRepositoryBase
     public IEnumerable<TE> FetchAll<TE>() where TE : class
     {
         return DbContext.Set<TE>().ToList();
+    }
+    public List<TE> FetchAll<TE>(int pageSize = 100, int page = 1) where TE : class
+    {
+        var query = DbContext.Set<TE>().AsQueryable();
+        return query.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
     }
 
     public TE Update<TE>(TE entity) where TE : class

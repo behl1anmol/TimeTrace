@@ -8,6 +8,7 @@ public interface IProcessRepository : IRepositoryBase
     Process AddProcess(Process process);
     bool AddProcesses(List<Process> processes);
     bool DeleteProcess(Process process);
+    bool DeleteProcess(int processId);
     bool DeleteProcesses(List<Process> processes);
     bool DeleteAllProcesses();
     Process? GetProcess(int processId);
@@ -31,5 +32,5 @@ public interface IProcessRepository : IRepositoryBase
 
     // Combined Operations
     Process AddProcessWithDetails(Process process, List<ProcessDetail> processDetails);
-    List<ProcessDetail> GetProcessDetailsWithImages(int processId, int page = 1, int pageSize = 100);
+    List<Image> GetImagesForProcess(int processId, int page = 1, int pageSize = 100);
 }

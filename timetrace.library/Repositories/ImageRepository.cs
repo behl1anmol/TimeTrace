@@ -39,14 +39,7 @@ public class ImageRepository : RepositoryBase, IImageRepository
     }
     public bool DeleteImage(Image image)
     {
-        try
-        {
-            base.Delete(image);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        base.Delete(image);
         return true;
     }
     public bool DeleteImages(List<Image> images)
@@ -56,28 +49,13 @@ public class ImageRepository : RepositoryBase, IImageRepository
     }
     public bool DeleteImages(int processDetailId)
     {
-        try
-        {
-            base.DeleteAll<Image>(i => i.ProcessDetailId == processDetailId);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        base.DeleteAll<Image>(i => i.ProcessDetailId == processDetailId);
         return true;
-
     }
 
     public bool DeleteImages(Expression<Func<Image, bool>> expression)
     {
-        try
-        {
-            base.DeleteAll(expression);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        base.DeleteAll(expression);
         return true;
     }
     public List<Image> GetImages(Expression<Func<Image, bool>> expression, int page = 1, int pageSize = 100)

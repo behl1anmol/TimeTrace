@@ -69,6 +69,26 @@ public class ProcessRepository : RepositoryBase, IProcessRepository
         {
             Expression<Func<Image, bool>> expression = i => i.ProcessDetail.ProcessId == process.ProcessId;
             _imageRepository.DeleteImages(expression);
+            Expression<Func<ProcessDetail, bool>> expression_pd = pd => pd.ProcessId == process.ProcessId;
+            base.DeleteAll(expression_pd);
+            base.Delete(process);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to delete process: {ex.Message}", ex);
+        }
+    }
+
+    public bool DeleteProcess(int processId)
+    {
+        try
+        {
+            Expression<Func<Image, bool>> expression = i => i.ProcessDetail.ProcessId == processId;
+            _imageRepository.DeleteImages(expression);
+            Expression<Func<ProcessDetail, bool>> expression_pd = pd => pd.ProcessId == processId;
+            base.DeleteAll(expression_pd);
+            base.DeleteAll<Process>(p => p.ProcessId == processId);
             return true;
         }
         catch (Exception ex)
@@ -79,82 +99,115 @@ public class ProcessRepository : RepositoryBase, IProcessRepository
 
     public bool DeleteProcessDetail(ProcessDetail processDetail)
     {
-        throw new NotImplementedException();
+        Expression<Func<Image, bool>> expression = i => i.ProcessDetailId == processDetail.ProcessDetailId;
+        _imageRepository.DeleteImages(expression);
+        base.Delete(processDetail);
+        return true;
     }
 
     public bool DeleteProcessDetails(List<ProcessDetail> processDetails)
     {
-        throw new NotImplementedException();
+        foreach (var processDetail in processDetails)
+        {
+            Expression<Func<Image, bool>> expression = i => i.ProcessDetailId == processDetail.ProcessDetailId;
+            _imageRepository.DeleteImages(expression);
+        }
+
+        base.DeleteAll(processDetails);
+        return true;
     }
 
     public bool DeleteProcessDetailsByProcessId(int processId)
     {
-        throw new NotImplementedException();
+        Expression<Func<Image, bool>> expression = i => i.ProcessDetail.ProcessId == processId;
+        _imageRepository.DeleteImages(expression);
+        base.DeleteAll<ProcessDetail>(pd => pd.ProcessId == processId);
+        return true;
     }
 
     public bool DeleteProcesses(List<Process> processes)
     {
-        throw new NotImplementedException();
+        foreach (var process in processes)
+        {
+            DeleteProcess(process);
+        }
+
+        return true;
     }
 
     public Process? GetProcess(int processId)
     {
-        throw new NotImplementedException();
+        return base.Find<Process>(p => p.ProcessId == processId);
     }
 
     public Process? GetProcessByName(string name)
     {
-        throw new NotImplementedException();
+        return base.Find<Process>(p => p.Name == name);
     }
 
     public ProcessDetail? GetProcessDetail(int processDetailId)
     {
-        throw new NotImplementedException();
+        return base.Find<ProcessDetail>(pd => pd.ProcessDetailId == processDetailId);
     }
 
     public List<ProcessDetail> GetProcessDetails(int processId, int page = 1, int pageSize = 100)
     {
-        throw new NotImplementedException();
+        return base.FindAll<ProcessDetail>(pd => pd.ProcessId == processId, pageSize, page);
     }
 
     public List<ProcessDetail> GetProcessDetailsByDateRange(DateTime startDate, DateTime endDate, int page = 1, int pageSize = 100)
     {
-        throw new NotImplementedException();
+        return base.FindAll<ProcessDetail>(pd => DateTime.Compare(pd.DateTimeStamp, startDate) >=0 && DateTime.Compare(pd.DateTimeStamp, endDate) <= 0, pageSize, page);
     }
 
-    public List<ProcessDetail> GetProcessDetailsWithImages(int processId, int page = 1, int pageSize = 100)
+    public List<Image> GetImagesForProcess(int processId, int page = 1, int pageSize = 100)
     {
-        throw new NotImplementedException();
+        return _imageRepository.GetImages(i => i.ProcessDetail.ProcessId == processId, page, pageSize);
     }
 
     public List<Process> GetProcesses(int page = 1, int pageSize = 100)
     {
-        throw new NotImplementedException();
+        return base.FetchAll<Process>(pageSize, page);
     }
 
     public List<Process> GetProcessesWithDetails(int page = 1, int pageSize = 100)
     {
-        throw new NotImplementedException();
+        //as the navigation property is virtual the below line may not return process details navigation property
+        return base.FetchAll<Process>(pageSize, page);
     }
 
     public Process UpdateProcess(Process process)
     {
-        throw new NotImplementedException();
+        ValidateProcess(process);
+        return base.Update(process);
     }
 
     public ProcessDetail UpdateProcessDetail(ProcessDetail processDetail)
     {
-        throw new NotImplementedException();
+        ValidateProcessDetail(processDetail);
+        return base.Update(processDetail);
     }
 
     public bool UpdateProcessDetails(List<ProcessDetail> processDetails)
     {
-        throw new NotImplementedException();
+        foreach (var processDetail in processDetails)
+        {
+            ValidateProcessDetail(processDetail);
+        }
+
+        base.UpdateAll(processDetails);
+        return true;
     }
 
     public bool UpdateProcesses(List<Process> processes)
     {
-        throw new NotImplementedException();
+        foreach (var process in processes)
+        {
+            ValidateProcess(process);
+        }
+
+        base.UpdateAll(processes);
+        return true;
     }
 
     private static void ValidateProcess(Process process)
