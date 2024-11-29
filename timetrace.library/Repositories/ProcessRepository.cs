@@ -163,7 +163,7 @@ public class ProcessRepository : RepositoryBase, IProcessRepository
 
     public List<ProcessDetail> GetProcessDetailsByDateRange(DateTime startDate, DateTime endDate, int page = 1, int pageSize = 100)
     {
-        return base.FindAll<ProcessDetail>(pd => DateTime.Compare(pd.DateTimeStamp, startDate) >=0 && DateTime.Compare(pd.DateTimeStamp, endDate) <= 0, pageSize, page);
+        return base.FindAll<ProcessDetail>(pd => pd.DateTimeStamp >= startDate && pd.DateTimeStamp < endDate, pageSize, page);
     }
 
     public List<Image> GetImagesForProcess(int processId, int page = 1, int pageSize = 100)
