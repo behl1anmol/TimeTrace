@@ -97,15 +97,6 @@ public interface IRepositoryBase
     IEnumerable<TE> FindAll<TE>(Expression<Func<TE, bool>> expression) where TE : class;
 
     /// <summary>
-    ///  Finds multiple entities from the repository based on a specified condition with pagination support.
-    /// </summary>
-    /// <typeparam name="TE"></typeparam>
-    /// <param name="pageSize"></param>
-    /// <param name="page"></param>
-    /// <returns></returns>
-    IEnumerable<TE> FindAll<TE>(int pageSize, int page) where TE : class;
-
-    /// <summary>
     /// Fetches all entities from the repository.
     /// </summary>
     /// <typeparam name="TE">The type of the entities.</typeparam>

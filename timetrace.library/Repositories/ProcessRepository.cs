@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using timetrace.library.Context;
+using Microsoft.EntityFrameworkCore;
 using timetrace.library.Models;
 
 namespace timetrace.library.Repositories;
@@ -51,6 +52,11 @@ public class ProcessRepository : RepositoryBase, IProcessRepository
     {
         ValidateProcess(process);
         AddProcess(process);
+        foreach (var processDetail in processDetails)
+        {
+            processDetail.ProcessId = process.ProcessId;
+            ValidateProcessDetail(processDetail);
+        }
         AddProcessDetails(processDetails);
         return process;
     }
@@ -167,12 +173,6 @@ public class ProcessRepository : RepositoryBase, IProcessRepository
 
     public List<Process> GetProcesses(int page = 1, int pageSize = 100)
     {
-        return base.FetchAll<Process>(pageSize, page);
-    }
-
-    public List<Process> GetProcessesWithDetails(int page = 1, int pageSize = 100)
-    {
-        //as the navigation property is virtual the below line may not return process details navigation property
         return base.FetchAll<Process>(pageSize, page);
     }
 

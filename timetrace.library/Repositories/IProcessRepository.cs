@@ -14,7 +14,6 @@ public interface IProcessRepository : IRepositoryBase
     Process? GetProcess(int processId);
     Process? GetProcessByName(string name); 
     List<Process> GetProcesses(int page = 1, int pageSize = 100);
-    List<Process> GetProcessesWithDetails(int page = 1, int pageSize = 100);
     Process UpdateProcess(Process process);
     bool UpdateProcesses(List<Process> processes);
 
