@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
 using timetrace.library.Context;
 using timetrace.library.Models;
 using timetrace.library.Repositories;
@@ -283,7 +278,8 @@ public class ProcessRepositoryTests
     {
         // Arrange
         _repository.AddProcess(process);
-        var processDetails = new List<ProcessDetail> { new ProcessDetail { ProcessId = process.ProcessId, Description = "Test Detail" } };
+
+        var processDetails = new List<ProcessDetail> { new() { ProcessId = process.ProcessId, Description = "Test Detail" } };
         _repository.AddProcessDetails(processDetails);
         var startDate = DateTime.Now;
         var endDate = DateTime.Now.AddDays(2);
@@ -383,7 +379,7 @@ public class ProcessRepositoryTests
     {
         // Arrange
         _repository.AddProcesses(processes);
-        for(int i = 0; i < processes.Count; i++)
+        for (int i = 0; i < processes.Count; i++)
         {
             processes[i].Name = $"Updated Process {i}";
         }

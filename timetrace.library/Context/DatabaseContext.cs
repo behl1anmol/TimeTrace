@@ -41,6 +41,8 @@ public class DatabaseContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         //optionsBuilder.UseSqlite("Data Source=timetrace.db;Password=Password12!");
+        optionsBuilder.LogTo(Console.WriteLine)
+                      .LogTo(message => System.Diagnostics.Debug.WriteLine(message));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using timetrace.library.Context;
-using Microsoft.EntityFrameworkCore;
 using timetrace.library.Models;
 
 namespace timetrace.library.Repositories;
@@ -163,7 +162,9 @@ public class ProcessRepository : RepositoryBase, IProcessRepository
 
     public List<ProcessDetail> GetProcessDetailsByDateRange(DateTime startDate, DateTime endDate, int page = 1, int pageSize = 100)
     {
-        return base.FindAll<ProcessDetail>(pd => pd.DateTimeStamp >= startDate && pd.DateTimeStamp < endDate, pageSize, page);
+        startDate = startDate.ToUniversalTime();
+        endDate = endDate.ToUniversalTime();
+        return base.FindAll<ProcessDetail>(pd => pd.DateTimeStamp.Date >= startDate.Date && pd.DateTimeStamp.Date <= endDate.Date, pageSize, page);
     }
 
     public List<Image> GetImagesForProcess(int processId, int page = 1, int pageSize = 100)

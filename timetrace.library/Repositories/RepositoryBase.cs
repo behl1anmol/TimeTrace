@@ -24,7 +24,8 @@ public class RepositoryBase : IRepositoryBase
 
     public void Delete<TE>(TE entity) where TE : class
     {
-        try{
+        try
+        {
             DbContext.Set<TE>().Remove(entity);
             DbContext.SaveChanges();
         }
@@ -67,13 +68,13 @@ public class RepositoryBase : IRepositoryBase
         try
         {
             var dbSet = DbContext.Set<TE>();
-            
+
             while (true)
             {
                 var batch = dbSet.Take(batchSize).ToList();
                 if (!batch.Any())
                     break;
-                    
+
                 dbSet.RemoveRange(batch);
                 DbContext.SaveChanges();
             }
