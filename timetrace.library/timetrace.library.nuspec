@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>timetrace.library</id>
+    <version>1.0.0</version>
+    <authors>Anmol Behl</authors>
+    <owners>Anmol Behl</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A library for database interaction.</description>
+    <releaseNotes>Initial release of the TimeTrace Library.</releaseNotes>
+    <copyright>Copyright © 2024</copyright>
+    <tags>timetrace library</tags>
+  </metadata>
+</package>
