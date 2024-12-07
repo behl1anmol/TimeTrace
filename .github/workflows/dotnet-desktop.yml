@@ -15,6 +15,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    #reference: https://github.com/orgs/community/discussions/69522
     permissions:
       contents: write # to be able to publish a GitHub release
       issues: write # to be able to comment on released issues
