@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="timetrace.ui.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:timetrace.ui.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding SettingsViewModel}">
+    <Grid>
+        <StackPanel Margin="32" MaxWidth="500">
+            <TextBlock Text="Settings"
+                       FontSize="22" FontWeight="Bold" Margin="0,0,0,24"/>
+            <!-- Auto Start Option -->
+            <CheckBox Content="Start Application Monitor when Windows starts"
+                      IsChecked="{Binding AutoStart}" Margin="0,0,0,16"/>
+            <!-- Screenshots Path -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                <TextBlock Text="Screenshots Folder:" VerticalAlignment="Center" Width="140" />
+                <TextBox Text="{Binding ScreenshotsPath}" Width="250" Margin="8,0,0,0"/>
+            </StackPanel>
+            <!-- Notification Option -->
+            <CheckBox Content="Show notification on new screenshot"
+                      IsChecked="{Binding NotifyOnNewCapture}" Margin="0,0,0,24"/>
+            <!-- Actions -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Save"
+                        Width="90"
+                        Margin="0,0,8,0"/>
+                <Button Content="Reset to Default"
+                        Width="120"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
