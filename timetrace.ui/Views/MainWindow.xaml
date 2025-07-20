@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:timetrace.ui.Views"
         xmlns:viewmodels="clr-namespace:timetrace.ui.ViewModels"
+        xmlns:helpers="clr-namespace:timetrace.ui.Helpers"
         mc:Ignorable="d"
         Title="Application Monitor" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        helpers:ViewLocator.ViewModel="MainViewModel">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -58,6 +60,15 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:ApplicationListViewModel}">
             <local:ApplicationListView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:PresenterViewModel}">
+            <local:PresenterView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:FilterViewModel}">
+            <local:FilterView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ApplicationDetailsViewModel}">
+            <local:ApplicationDetailsView />
         </DataTemplate>
 
         <Style x:Key="NavigationButtonStyle" TargetType="Button">

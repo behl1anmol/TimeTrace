@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using timetrace.ui.Models;
 using timetrace.ui.Services;
 using timetrace.ui.ViewModels;
-using timetrace.ui.Views;
 
 namespace timetrace.ui;
 /// <summary>
@@ -38,14 +37,14 @@ public partial class App : Application
         ServiceProvider = services.BuildServiceProvider();
 
         // Retrieve the MainViewModel instance from the ServiceProvider
-        var mainViewModel = ServiceProvider.GetService<MainViewModel>();
+        //var mainViewModel = ServiceProvider.GetService<MainViewModel>();
 
         // Pass the MainViewModel instance to the MainWindow constructor
-        var mainWindow = new MainWindow(mainViewModel)
-        {
-            DataContext = mainViewModel
-        };
-        mainWindow.Show();
+        //var mainWindow = new MainWindow(mainViewModel)
+        //{
+        //    DataContext = mainViewModel
+        //};
+        //mainWindow.Show();
 
         base.OnStartup(e);
     }

@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using timetrace.ui.ViewModels;
 
 namespace timetrace.ui.Views;
 /// <summary>
@@ -7,9 +6,8 @@ namespace timetrace.ui.Views;
 /// </summary>
 public partial class ApplicationDetailsView : UserControl
 {
-    public ApplicationDetailsView(ApplicationDetailsViewModel applicationDetailsViewModel)
+    public ApplicationDetailsView()
     {
         InitializeComponent();
-        DataContext = applicationDetailsViewModel;
     }
 }

@@ -6,9 +6,10 @@
              xmlns:local="clr-namespace:timetrace.ui.Views"
              xmlns:vm="clr-namespace:timetrace.ui.ViewModels"
              xmlns:converters="clr-namespace:timetrace.ui.Converters"
+             xmlns:helpers="clr-namespace:timetrace.ui.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             local:ViewLocator.ViewModel="ApplicationListViewModel">
+             helpers:ViewLocator.ViewModel="ApplicationListViewModel">
     <Grid>
         <Grid.Resources>
             <converters:StatusToBrushConverter x:Key="StatusToBrushConverter"/>

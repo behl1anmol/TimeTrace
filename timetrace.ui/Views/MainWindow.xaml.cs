@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using timetrace.ui.ViewModels;
 
 namespace timetrace.ui.Views;
 /// <summary>
@@ -7,9 +6,8 @@ namespace timetrace.ui.Views;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow(MainViewModel mainViewModel)
+    public MainWindow()
     {
         InitializeComponent();
-        DataContext = mainViewModel;
     }
 }

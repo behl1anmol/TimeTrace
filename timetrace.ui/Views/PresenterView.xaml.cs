@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using timetrace.ui.ViewModels;
 
 namespace timetrace.ui.Views;
 /// <summary>
@@ -7,9 +6,8 @@ namespace timetrace.ui.Views;
 /// </summary>
 public partial class PresenterView : UserControl
 {
-    public PresenterView(PresenterViewModel presenterViewModel)
+    public PresenterView()
     {
         InitializeComponent();
-        DataContext = presenterViewModel;
     }
 }
