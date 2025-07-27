@@ -9,7 +9,6 @@
         mc:Ignorable="d"
         Title="Application Monitor" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         helpers:ViewLocator.ViewModel="MainViewModel">
 
     <Grid>
@@ -19,24 +18,28 @@
         </Grid.ColumnDefinitions>
 
         <!-- Left Sidebar Navigation -->
-        <Border Grid.Column="0" Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" BorderThickness="0,0,1,0">
             <StackPanel Margin="16">
-                <TextBlock Text="App Monitor" FontSize="20" FontWeight="Bold" 
-                           Foreground="#333" Margin="0,0,0,32"/>
-
                 <Button Content="📱 Applications" 
-                        Command="{Binding NavigateToApplicationsCommand}"
-                        Style="{DynamicResource NavigationButtonStyle}"
-                        Margin="0,0,0,8"/>
+                        HorizontalContentAlignment="Left"
+                        HorizontalAlignment="Stretch"
+                        Background="Transparent"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Command="{Binding NavigateToApplicationsCommand}"/>
 
-                <Button Content="⚙️ Settings" 
-                        Command="{Binding NavigateToSettingsCommand}"
-                        Style="{DynamicResource NavigationButtonStyle}"/>
+                <Button Content="⚙️ Settings"
+                        HorizontalContentAlignment="Left"
+                        HorizontalAlignment="Stretch"
+                        Background="Transparent"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Command="{Binding NavigateToSettingsCommand}"/>
             </StackPanel>
         </Border>
 
         <!-- Main Content Area -->
-        <Border Grid.Column="1" Background="White">
+        <Border Grid.Column="1">
             <Grid Margin="24">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -45,8 +48,8 @@
 
                 <!-- Header -->
                 <TextBlock Grid.Row="0" Text="{Binding CurrentViewTitle}" 
-                           FontSize="28" FontWeight="Light" 
-                           Foreground="#333" Margin="0,0,0,24"/>
+                           FontSize="40" FontWeight="Bold" 
+                           Margin="0,0,0,24"/>
 
                 <!-- Dynamic Content -->
                 <ContentControl Grid.Row="1" Content="{Binding CurrentView}"/>
@@ -71,20 +74,6 @@
             <local:ApplicationDetailsView />
         </DataTemplate>
 
-        <Style x:Key="NavigationButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E3F2FD"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </Window.Resources>
 </Window>
 
