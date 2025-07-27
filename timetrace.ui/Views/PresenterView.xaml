@@ -33,12 +33,12 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="White" BorderBrush="#E0E0E0" 
+                        <Border 
                                 BorderThickness="1" CornerRadius="4" 
                                 Margin="4" Padding="8">
                             <StackPanel>
                                 <!-- Image Placeholder -->
-                                <Border Height="120" Background="#F5F5F5" 
+                                <Border Height="120"
                                         CornerRadius="2" Margin="0,0,0,8">
                                     <TextBlock Text="📷" FontSize="32" 
                                                HorizontalAlignment="Center" 
@@ -51,11 +51,11 @@
                                            FontWeight="SemiBold" FontSize="12" 
                                            TextTrimming="CharacterEllipsis"/>
                                 <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:MM/dd/yyyy HH:mm}'}" 
-                                           FontSize="10" Foreground="#666" Margin="0,2,0,0"/>
+                                           FontSize="10"  Margin="0,2,0,0"/>
                                 <TextBlock Text="{Binding FileSize}" 
-                                           FontSize="10" Foreground="#666"/>
+                                           FontSize="10" />
                                 <TextBlock Text="{Binding ProcessStatus}" 
-                                           FontSize="10" Foreground="#0066CC" 
+                                           FontSize="10" 
                                            FontWeight="SemiBold"/>
                             </StackPanel>
                         </Border>

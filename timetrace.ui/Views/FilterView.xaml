@@ -11,7 +11,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="16">
             <TextBlock Text="Filter Options" FontSize="18" FontWeight="SemiBold" 
-                       Foreground="#333" Margin="0,0,0,16"/>
+                        Margin="0,0,0,16"/>
 
             <!-- Date Filter Section -->
             <GroupBox Header="Date Range" Margin="0,0,0,16">
@@ -43,11 +43,9 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Apply Filter" 
                         Command="{Binding ApplyFilterCommand}"
-                        Style="{DynamicResource PrimaryButtonStyle}"
                         Margin="0,0,8,0"/>
                 <Button Content="Clear" 
-                        Command="{Binding ClearFilterCommand}"
-                        Style="{DynamicResource SecondaryButtonStyle}"/>
+                        Command="{Binding ClearFilterCommand}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

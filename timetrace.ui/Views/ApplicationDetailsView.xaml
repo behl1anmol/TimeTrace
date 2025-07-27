@@ -15,12 +15,12 @@
         </Grid.ColumnDefinitions>
 
         <!-- FilterView (Left Side) -->
-        <Border Grid.Column="0" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0"  BorderThickness="0,0,1,0">
             <local:FilterView DataContext="{Binding FilterViewModel}"/>
         </Border>
 
         <!-- PresenterView (Right Side) -->
-        <Border Grid.Column="1" Background="White">
+        <Border Grid.Column="1">
             <local:PresenterView DataContext="{Binding PresenterViewModel}"/>
         </Border>
     </Grid>

@@ -15,6 +15,9 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string currentViewTitle = "Applications";
 
+    [ObservableProperty]
+    private bool isCollapsed = false;
+
     public MainViewModel(ApplicationListViewModel applicationListViewModel, SettingsViewModel settingsViewModel, INavigationService navigationService)
     {
         _applicationListViewModel = applicationListViewModel;
@@ -39,5 +42,11 @@ public partial class MainViewModel : ObservableObject
     {
         CurrentView = _settingsViewModel;
         CurrentViewTitle = "Settings";
+    }
+
+    [RelayCommand]
+    private void ToggleSidebar()
+    {
+        IsCollapsed = !IsCollapsed;
     }
 }
