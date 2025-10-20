@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="timetrace.ui.Controls.BusyIndicator.BusyAwareView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:timetrace.ui.Controls.BusyIndicator"
+             xmlns:vm="clr-namespace:timetrace.ui.Controls.BusyIndicator"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:BusyAwareViewModel/>
+    </UserControl.DataContext>
+    <Grid Background="#80000000">
+        <Border Background="White" CornerRadius="8" 
+             BorderBrush="#CCCCCC" BorderThickness="1"
+             Width="250" Height="100"
+             HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock Text="{Binding BusyMessage}" 
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,10"/>
+                <ProgressBar IsIndeterminate="True" 
+                          Width="200" Height="10"
+                          HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
