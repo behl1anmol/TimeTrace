@@ -7,10 +7,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\AppIcon\timeTrace.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\app.ico" />
+    <None Remove="Resources\AppIcon\timeTrace.png" />
+    <None Remove="Resources\timeTrace.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,10 +20,12 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\app.ico" />
+    <Resource Include="Resources\AppIcon\timeTrace.png" />
+    <Resource Include="Resources\AppIcon\timeTrace.ico" />
   </ItemGroup>
 
 </Project>

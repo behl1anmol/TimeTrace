@@ -1,8 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-using timetrace.ui.Services.Tray;
 
 namespace timetrace.ui.Services.Tray;
 
@@ -180,14 +178,41 @@ public class TrayIconService : ITrayIconService
     {
         try
         {
-            // Load icon from embedded resources
-            var uri = new Uri("pack://application:,,,/timetrace.ui;component/Resources/app.ico");
+            // Try to load the app icon from resources
+            var uri = new Uri("pack://application:,,,/timetrace.ui;component/Resources/AppIcon/timeTrace.ico");
             var streamResourceInfo = Application.GetResourceStream(uri);
 
             if (streamResourceInfo != null)
             {
                 using var stream = streamResourceInfo.Stream;
-                return CreateIconFromResourceStream(stream);
+
+                // Create a bitmap from the stream
+                var bitmap = new System.Windows.Media.Imaging.BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = stream;
+                bitmap.DecodePixelWidth = 32; // Set size for the tray icon
+                bitmap.DecodePixelHeight = 32;
+                bitmap.EndInit();
+
+                // Convert BitmapImage to bitmap and create icon
+                var bitmapSource = bitmap;
+                var bmp = new System.Drawing.Bitmap(
+                    bitmapSource.PixelWidth,
+                    bitmapSource.PixelHeight,
+                    System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                var data = CopyPixels(bitmapSource);
+                var bmpData = bmp.LockBits(
+                    new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
+                    System.Drawing.Imaging.ImageLockMode.WriteOnly,
+                    System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
+                bmp.UnlockBits(bmpData);
+
+                // Create icon from bitmap
+                var iconHandle = bmp.GetHicon();
+                return iconHandle;
             }
         }
         catch
@@ -197,6 +222,15 @@ public class TrayIconService : ITrayIconService
 
         // Use default Windows application icon as fallback
         return LoadIcon(IntPtr.Zero, new IntPtr(32512)); // IDI_APPLICATION
+    }
+
+    // Add this extension method for BitmapSource
+    private static byte[] CopyPixels(System.Windows.Media.Imaging.BitmapSource source)
+    {
+        var stride = source.PixelWidth * ((source.Format.BitsPerPixel + 7) / 8);
+        var bytes = new byte[stride * source.PixelHeight];
+        source.CopyPixels(bytes, stride, 0);
+        return bytes;
     }
 
     /// <summary>
@@ -216,8 +250,8 @@ public class TrayIconService : ITrayIconService
             (uint)iconData.Length,
             true,
             0x00030000, // Version 3
-            16, // Desired width
-            16, // Desired height
+            128, // Desired width
+            128, // Desired height
             0   // Default color format
         );
     }
@@ -275,7 +309,8 @@ public class TrayIconService : ITrayIconService
 
         // Open application menu item
         var openItem = new System.Windows.Controls.MenuItem { Header = "Open TimeTrace" };
-        openItem.Click += (s, e) => {
+        openItem.Click += (s, e) =>
+        {
             if (_mainWindow != null)
             {
                 _mainWindow.Show();
@@ -286,7 +321,8 @@ public class TrayIconService : ITrayIconService
 
         // Exit application menu item
         var exitItem = new System.Windows.Controls.MenuItem { Header = "Exit" };
-        exitItem.Click += (s, e) => {
+        exitItem.Click += (s, e) =>
+        {
             Application.Current.Shutdown();
         };
 

@@ -9,6 +9,10 @@
                 <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />
                 <ResourceDictionary Source="Resources/TrayIconResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="AppIcon" 
+                        UriSource="/Resources/AppIcon/timeTrace.ico"
+                        DecodePixelWidth="128" 
+                        DecodePixelHeight="128" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
