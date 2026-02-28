@@ -42,11 +42,11 @@ public partial class ApplicationListViewModel : ObservableObject
     private void SelectApplication(ApplicationModel application)
     {
         SelectedApplication = application;
-        var detailsViewModel = _applicationDetailsViewModel;
-        // Navigate to details view
+        _applicationDetailsViewModel.SetApplication(application);
+
         if (_navigationService is NavigationService navService)
         {
-            navService.NavigateToDetails(detailsViewModel);
+            navService.NavigateToDetails(_applicationDetailsViewModel);
         }
     }
 

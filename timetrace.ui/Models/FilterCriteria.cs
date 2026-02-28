@@ -1,9 +1,11 @@
 namespace timetrace.ui.Models;
 
-public record FilterCriteria
-(
+/// <summary>
+/// Immutable filter criteria for image date-range filtering.
+/// NOTE: Backend IProcessRepository.GetProcessDetailsByDateRange(startDate, endDate, page, pageSize)
+///       aligns to FromDate/ToDate.
+/// </summary>
+public record FilterCriteria(
     DateTime? FromDate,
-    DateTime? ToDate,
-    DateTime? SelectedDate,
-    IList<string> Statuses // e.g., Active, Minimized, Closed
+    DateTime? ToDate
 );

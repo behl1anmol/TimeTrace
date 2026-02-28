@@ -14,8 +14,8 @@
 
     <Window.Resources>
         <converters:BooleanToGridLengthConverter x:Key="BooleanToGridLengthConverter" 
-                                                CollapsedWidth="90" 
-                                                ExpandedWidth="250"/>
+                                                CollapsedWidth="70" 
+                                                ExpandedWidth="240"/>
         
         <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
             <local:SettingsView />
@@ -44,21 +44,8 @@
         <local:NavigationSidebar Grid.Column="0" DataContext="{Binding}"/>
 
         <!-- Main Content Area -->
-        <Border Grid.Column="1">
-            <Grid Margin="24">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <!-- Header -->
-                <TextBlock Grid.Row="0" Text="{Binding CurrentViewTitle}" 
-                           FontSize="40" FontWeight="Bold" 
-                           Margin="0,0,0,24"/>
-
-                <!-- Dynamic Content -->
-                <ContentControl Grid.Row="1" Content="{Binding CurrentView}"/>
-            </Grid>
+        <Border Grid.Column="1" Padding="0">
+            <ContentControl Content="{Binding CurrentView}"/>
         </Border>
     </Grid>
 </Window>

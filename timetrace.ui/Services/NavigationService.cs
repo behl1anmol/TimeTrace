@@ -17,4 +17,9 @@ public class NavigationService : INavigationService
     {
         Navigated?.Invoke(detailsViewModel, "Details");
     }
+
+    public void NavigateBack()
+    {
+        Navigated?.Invoke(null!, "Back");
+    }
 }

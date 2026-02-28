@@ -36,6 +36,7 @@ public partial class App : Application
         var services = new ServiceCollection();
 
         // Register services
+        // TODO: Replace ApplicationDataService with real implementation using timetrace.library repositories
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IApplicationDataService, ApplicationDataService>();
         services.AddSingleton<ITrayIconService, TrayIconService>();
