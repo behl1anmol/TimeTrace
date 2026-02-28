@@ -11,77 +11,18 @@
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:BooleanToStringConverter x:Key="BooleanToStringConverter"/>
 
-        <!-- Nav button style with theme-aware hover/pressed states -->
-        <Style x:Key="NavButtonStyle" TargetType="Button">
+        <!-- Nav button style — inherits Fluent theme visuals -->
+        <Style x:Key="NavButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="Padding" Value="14,10"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Background="{TemplateBinding Background}"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background"
-                                        Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background"
-                                        Value="{DynamicResource SystemControlHighlightListMediumBrush}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Circular collapse/expand toggle button -->
-        <Style x:Key="ToggleButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Width" Value="32"/>
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Background="{TemplateBinding Background}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                CornerRadius="16"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background"
-                                        Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background"
-                                        Value="{DynamicResource SystemControlHighlightListMediumBrush}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
     </UserControl.Resources>
 
-    <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-            BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
-            BorderThickness="0,0,1,0">
+    <Border BorderThickness="0,0,1,0">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -99,7 +40,6 @@
                            FontWeight="SemiBold"
                            VerticalAlignment="Center"
                            Margin="12,0,0,0"
-                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                            Visibility="{Binding IsCollapsed, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
             </StackPanel>
 
@@ -113,8 +53,7 @@
                             <Setter Property="BorderBrush" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ActiveNavItem}" Value="Applications">
-                                    <Setter Property="BorderBrush" Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
-                                    <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -129,7 +68,7 @@
                             <Viewbox Width="24" Height="24">
                                 <Canvas Width="24" Height="24">
                                     <Path Data="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v2H8v2h8v-2h-2v-2h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"
-                                          Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
                                 </Canvas>
                             </Viewbox>
                             <TextBlock Text="Applications"
@@ -137,7 +76,6 @@
                                        FontWeight="Medium"
                                        Margin="12,0,0,0"
                                        VerticalAlignment="Center"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                        Visibility="{Binding IsCollapsed, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
                         </StackPanel>
                     </Button>
@@ -150,8 +88,7 @@
                             <Setter Property="BorderBrush" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ActiveNavItem}" Value="Settings">
-                                    <Setter Property="BorderBrush" Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
-                                    <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -166,7 +103,7 @@
                             <Viewbox Width="24" Height="24">
                                 <Canvas Width="24" Height="24">
                                     <Path Data="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"
-                                          Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
                                 </Canvas>
                             </Viewbox>
                             <TextBlock Text="Settings"
@@ -174,7 +111,6 @@
                                        FontWeight="Medium"
                                        Margin="12,0,0,0"
                                        VerticalAlignment="Center"
-                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                        Visibility="{Binding IsCollapsed, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
                         </StackPanel>
                     </Button>
@@ -184,21 +120,20 @@
 
             <!-- Row 2: Footer (Toggle + Version) -->
             <StackPanel Grid.Row="2" Margin="0,0,0,16">
-                <Button Style="{StaticResource ToggleButtonStyle}"
-                        Command="{Binding ToggleSidebarCommand}"
+                <Button Command="{Binding ToggleSidebarCommand}"
                         HorizontalAlignment="Center"
+                        Width="32" Height="32"
                         Margin="0,0,0,8">
                     <Button.ToolTip>
                         <ToolTip Content="{Binding IsCollapsed, Converter={StaticResource BooleanToStringConverter}, ConverterParameter='Expand Sidebar|Collapse Sidebar'}"/>
                     </Button.ToolTip>
                     <TextBlock Text="{Binding IsCollapsed, Converter={StaticResource BooleanToStringConverter}, ConverterParameter='▶|◀'}"
-                               FontSize="14"
-                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                               FontSize="14"/>
                 </Button>
                 <TextBlock Text="Windows Process Capture v1.0"
                            FontSize="10"
                            HorizontalAlignment="Center"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Opacity="0.6"
                            Visibility="{Binding IsCollapsed, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
             </StackPanel>
         </Grid>

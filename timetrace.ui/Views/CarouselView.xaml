@@ -28,7 +28,9 @@
             </Grid.RowDefinitions>
 
             <!-- Row 0: Main Image Area -->
-            <Border Grid.Row="0" Background="#1A1A1A" CornerRadius="8" Margin="12,12,12,4">
+            <Border Grid.Row="0"
+                    Background="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"
+                    CornerRadius="8" Margin="12,12,12,4">
                 <Grid>
                     <!-- Image + Placeholder -->
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -39,7 +41,8 @@
                         <!-- Placeholder when no image loaded -->
                         <TextBlock Text="📷" FontSize="64"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Foreground="Gray" Opacity="0.4"
+                                   Opacity="0.4"
+                                   Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
                                    Visibility="{Binding CurrentImage.ImageSource, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=True}"/>
                     </Grid>
 
@@ -50,13 +53,15 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="BtnBorder" Width="44" Height="44"
-                                        CornerRadius="22" Background="#88000000">
-                                    <TextBlock Text="◀" Foreground="White" FontSize="18"
+                                        CornerRadius="22" Opacity="0.6"
+                                        Background="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
+                                    <TextBlock Text="◀" FontSize="18"
+                                               Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="BtnBorder" Property="Background" Value="#BB000000"/>
+                                        <Setter TargetName="BtnBorder" Property="Opacity" Value="0.8"/>
                                     </Trigger>
                                     <Trigger Property="IsEnabled" Value="False">
                                         <Setter TargetName="BtnBorder" Property="Opacity" Value="0.3"/>
@@ -73,13 +78,15 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="BtnBorder" Width="44" Height="44"
-                                        CornerRadius="22" Background="#88000000">
-                                    <TextBlock Text="▶" Foreground="White" FontSize="18"
+                                        CornerRadius="22" Opacity="0.6"
+                                        Background="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
+                                    <TextBlock Text="▶" FontSize="18"
+                                               Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="BtnBorder" Property="Background" Value="#BB000000"/>
+                                        <Setter TargetName="BtnBorder" Property="Opacity" Value="0.8"/>
                                     </Trigger>
                                     <Trigger Property="IsEnabled" Value="False">
                                         <Setter TargetName="BtnBorder" Property="Opacity" Value="0.3"/>
@@ -92,8 +99,10 @@
                     <!-- Counter Pill (top center) -->
                     <Border HorizontalAlignment="Center" VerticalAlignment="Top"
                             Margin="0,12,0,0" Padding="14,6"
-                            CornerRadius="14" Background="#CC000000">
-                        <TextBlock Foreground="White" FontSize="12">
+                            CornerRadius="14" Opacity="0.8"
+                            Background="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
+                        <TextBlock Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                   FontSize="12">
                             <Run Text="{Binding CarouselCounter, Mode=OneWay}"/>
                             <Run Text=" · "/>
                             <Run Text="{Binding CurrentImage.ScreenshotName, Mode=OneWay}"/>
@@ -103,9 +112,11 @@
                     <!-- Timestamp Badge (bottom right) -->
                     <Border HorizontalAlignment="Right" VerticalAlignment="Bottom"
                             Margin="0,0,16,12" Padding="10,5"
-                            CornerRadius="10" Background="#AA000000">
+                            CornerRadius="10" Opacity="0.7"
+                            Background="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
                         <TextBlock Text="{Binding CurrentImage.Timestamp, StringFormat='{}{0:MMM dd, yyyy HH:mm:ss}'}"
-                                   Foreground="#DDD" FontSize="11"/>
+                                   Foreground="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                   FontSize="11"/>
                     </Border>
                 </Grid>
             </Border>
@@ -116,7 +127,7 @@
                          SelectedIndex="{Binding CurrentIndex, Mode=TwoWay}"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                         Background="Transparent" BorderThickness="0"
+                         BorderThickness="0"
                          Height="80">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -126,7 +137,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Width="96" Height="64" CornerRadius="4"
-                                    Margin="3,0" ClipToBounds="True" Background="#F0F0F0">
+                                    Margin="3,0" ClipToBounds="True">
                                 <Grid>
                                     <TextBlock Text="📷" FontSize="20"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -152,7 +163,8 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#4A90D9"/>
+                                                <Setter TargetName="ItemBorder" Property="BorderBrush"
+                                                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                                                 <Setter TargetName="ItemBorder" Property="Opacity" Value="1.0"/>
                                             </Trigger>
                                             <Trigger Property="IsMouseOver" Value="True">
@@ -185,10 +197,10 @@
                            Opacity="0.5" Margin="0,0,0,12"/>
                 <TextBlock Text="No screenshots found" FontSize="18"
                            FontWeight="SemiBold" HorizontalAlignment="Center"
-                           Foreground="#666"/>
+                           Opacity="0.6"/>
                 <TextBlock Text="Adjust your filter settings or capture new screenshots."
                            FontSize="13" HorizontalAlignment="Center"
-                           Foreground="#999" Margin="0,6,0,0"/>
+                           Opacity="0.5" Margin="0,6,0,0"/>
             </StackPanel>
         </Border>
     </Grid>

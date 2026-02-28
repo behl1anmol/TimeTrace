@@ -16,12 +16,11 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,24">
             <TextBlock Text="Currently Running Applications"
                        FontSize="22"
-                       FontWeight="Bold"
-                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                       FontWeight="Bold"/>
             <TextBlock Text="Click on any application to view captured screenshots"
                        FontSize="13"
                        Margin="0,4,0,0"
-                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                       Opacity="0.6"/>
         </StackPanel>
 
         <!-- Card Grid -->
@@ -42,8 +41,6 @@
                                 Padding="16"
                                 CornerRadius="12"
                                 BorderThickness="1"
-                                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
-                                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
                                 Cursor="Hand">
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick"
@@ -71,7 +68,6 @@
                                     <TextBlock Text="{Binding ProcessName}"
                                                FontSize="16"
                                                FontWeight="Bold"
-                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                                TextTrimming="CharacterEllipsis"/>
                                     <StackPanel Orientation="Horizontal"
                                                 Margin="0,4,0,0">
@@ -81,7 +77,7 @@
                                                    VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding CaptureCount, StringFormat='{}{0} screenshots captured'}"
                                                    FontSize="12"
-                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                   Opacity="0.6"
                                                    VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -91,19 +87,12 @@
                                            Text="→"
                                            FontSize="18"
                                            VerticalAlignment="Center"
-                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                           Opacity="0.5"
                                            Margin="8,0,0,0"/>
                             </Grid>
                         </Border>
 
-                        <DataTemplate.Triggers>
-                            <Trigger SourceName="CardBorder" Property="IsMouseOver" Value="True">
-                                <Setter TargetName="CardBorder" Property="Background"
-                                        Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
-                                <Setter TargetName="CardBorder" Property="BorderBrush"
-                                        Value="{DynamicResource SystemControlHighlightListMediumBrush}"/>
-                            </Trigger>
-                        </DataTemplate.Triggers>
+
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

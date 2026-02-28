@@ -6,93 +6,14 @@
              xmlns:converters="clr-namespace:timetrace.ui.Converters"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="260"
-             Width="260"
-             Background="Transparent">
+             Width="260">
 
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:NullToVisibilityConverter x:Key="NullToVis"/>
-
-        <!-- Shared style for the small clear (×) buttons -->
-        <Style x:Key="ClearDateButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="22"/>
-            <Setter Property="Height" Value="22"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Margin" Value="6,0,0,0"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="#CCCCCC"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
-                                SnapsToDevicePixels="True">
-                            <TextBlock Text="&#xD7;"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="13"
-                                       Foreground="#888888"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#FFEEEEEE"/>
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#999999"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#FFDDDDDD"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Outline button style for Clear Filters -->
-        <Style x:Key="OutlineButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="#3B82F6"/>
-            <Setter Property="BorderThickness" Value="1.5"/>
-            <Setter Property="Foreground" Value="#3B82F6"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6"
-                                Padding="{TemplateBinding Padding}"
-                                SnapsToDevicePixels="True">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#F0F6FF"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#DBEAFE"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
 
-    <Border Background="#FAFBFC" BorderBrush="#E5E7EB" BorderThickness="0,0,1,0">
+    <Border BorderThickness="0,0,1,0">
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Margin="20">
 
@@ -106,17 +27,15 @@
                 <TextBlock Text="FROM"
                            FontSize="11"
                            FontWeight="SemiBold"
-                           Foreground="#6B7280"
-                           Margin="0,0,0,6">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                           Opacity="0.6"
+                           Margin="0,0,0,6"/>
                 <DockPanel Margin="0,0,0,16">
                     <Button DockPanel.Dock="Right"
-                            Style="{StaticResource ClearDateButtonStyle}"
+                            Content="×"
+                            Width="22" Height="22"
+                            Padding="0" Margin="6,0,0,0"
+                            FontSize="12"
+                            VerticalAlignment="Center"
                             Command="{Binding ClearFromDateCommand}"
                             ToolTip="Clear from date"
                             Visibility="{Binding FromDate, Converter={StaticResource NullToVis}}"/>
@@ -128,17 +47,15 @@
                 <TextBlock Text="TO"
                            FontSize="11"
                            FontWeight="SemiBold"
-                           Foreground="#6B7280"
-                           Margin="0,0,0,6">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                           Opacity="0.6"
+                           Margin="0,0,0,6"/>
                 <DockPanel Margin="0,0,0,16">
                     <Button DockPanel.Dock="Right"
-                            Style="{StaticResource ClearDateButtonStyle}"
+                            Content="×"
+                            Width="22" Height="22"
+                            Padding="0" Margin="6,0,0,0"
+                            FontSize="12"
+                            VerticalAlignment="Center"
                             Command="{Binding ClearToDateCommand}"
                             ToolTip="Clear to date"
                             Visibility="{Binding ToDate, Converter={StaticResource NullToVis}}"/>
@@ -153,61 +70,30 @@
                         Padding="12,8"
                         FontSize="13"
                         FontWeight="SemiBold"
-                        HorizontalAlignment="Stretch">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="#3B82F6"/>
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border x:Name="Bd"
-                                                Background="{TemplateBinding Background}"
-                                                CornerRadius="6"
-                                                Padding="{TemplateBinding Padding}"
-                                                SnapsToDevicePixels="True">
-                                            <ContentPresenter HorizontalAlignment="Center"
-                                                              VerticalAlignment="Center"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#2563EB"/>
-                                            </Trigger>
-                                            <Trigger Property="IsPressed" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#1D4ED8"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                        HorizontalAlignment="Stretch"/>
 
                 <!-- Active filter summary badge -->
                 <Border CornerRadius="8"
-                        Background="#EFF6FF"
-                        BorderBrush="#BFDBFE"
-                        BorderThickness="1"
                         Padding="10"
                         Margin="0,12,0,0"
+                        BorderThickness="1"
                         Visibility="{Binding HasActiveFilter, Converter={StaticResource BoolToVis}}">
                     <TextBlock Text="{Binding FilterSummary}"
                                FontSize="12"
-                               Foreground="#1E40AF"
+                               FontWeight="SemiBold"
                                TextWrapping="Wrap"/>
                 </Border>
 
                 <!-- Clear Filters button -->
                 <Button Content="Clear Filters"
                         Command="{Binding ClearFilterCommand}"
-                        Style="{StaticResource OutlineButtonStyle}"
                         Margin="0,12,0,0"
+                        Padding="12,8"
+                        FontSize="13"
+                        HorizontalAlignment="Stretch"
                         Visibility="{Binding HasActiveFilter, Converter={StaticResource BoolToVis}}"/>
 
-                <!-- Stats panel (Total/Filtered counts) is rendered in ApplicationDetailsView.xaml -->
+                <!-- Stats panel is rendered in ApplicationDetailsView.xaml -->
 
             </StackPanel>
         </ScrollViewer>

@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <!-- Row 0: Header Bar -->
-        <Border Grid.Row="0" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="16,10">
+        <Border Grid.Row="0" BorderThickness="0,0,0,1" Padding="16,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -32,12 +32,10 @@
 
                 <!-- Left: Back Button -->
                 <Button Grid.Column="0"
+                        Content="← Back"
                         Command="{Binding NavigateBackCommand}"
-                        Background="Transparent" BorderThickness="0"
-                        Cursor="Hand" VerticalAlignment="Center"
-                        Padding="8,4">
-                    <TextBlock Text="← Back" FontSize="14"/>
-                </Button>
+                        VerticalAlignment="Center"
+                        Padding="8,4"/>
 
                 <!-- Center: App Info -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
@@ -47,7 +45,7 @@
                     <TextBlock Text="{Binding Application.ProcessName}"
                                FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center"
                                Margin="0,0,12,0"/>
-                    <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="#666">
+                    <TextBlock VerticalAlignment="Center" FontSize="13" Opacity="0.6">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} of {1} screenshots">
                                 <Binding Path="FilteredImageCount"/>
@@ -58,19 +56,16 @@
                 </StackPanel>
 
                 <!-- Right: View Mode Toggle -->
-                <Border Grid.Column="2" CornerRadius="6" BorderBrush="#D0D0D0"
+                <Border Grid.Column="2" CornerRadius="6"
                         BorderThickness="1" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <Button Command="{Binding SwitchToCarouselCommand}"
-                                Content="Carousel" Padding="12,6"
-                                BorderThickness="0" Cursor="Hand">
+                                Content="Carousel" Padding="12,6">
                             <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Background" Value="Transparent"/>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="FontWeight" Value="Normal"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsCarouselMode}" Value="True">
-                                            <Setter Property="Background" Value="#E0EDFF"/>
                                             <Setter Property="FontWeight" Value="SemiBold"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -78,15 +73,12 @@
                             </Button.Style>
                         </Button>
                         <Button Command="{Binding SwitchToGridCommand}"
-                                Content="Grid" Padding="12,6"
-                                BorderThickness="0" Cursor="Hand">
+                                Content="Grid" Padding="12,6">
                             <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Background" Value="Transparent"/>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="FontWeight" Value="Normal"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsGridMode}" Value="True">
-                                            <Setter Property="Background" Value="#E0EDFF"/>
                                             <Setter Property="FontWeight" Value="SemiBold"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -106,7 +98,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Column 0: Filter Panel + Stats -->
-            <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
+            <Border Grid.Column="0" BorderThickness="0,0,1,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -117,15 +109,14 @@
                     <local:FilterView Grid.Row="0" DataContext="{Binding FilterViewModel}"/>
 
                     <!-- Stats Panel -->
-                    <Border Grid.Row="1" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0"
-                            Padding="16,12">
+                    <Border Grid.Row="1" BorderThickness="0,1,0,0" Padding="16,12">
                         <StackPanel>
-                            <TextBlock FontSize="12" Foreground="#555">
+                            <TextBlock FontSize="12" Opacity="0.7">
                                 <Run Text="Total: "/>
                                 <Run Text="{Binding TotalImageCount, Mode=OneWay}" FontWeight="SemiBold"/>
                                 <Run Text=" screenshots"/>
                             </TextBlock>
-                            <TextBlock FontSize="12" Foreground="#555" Margin="0,4,0,0">
+                            <TextBlock FontSize="12" Opacity="0.7" Margin="0,4,0,0">
                                 <Run Text="Filtered: "/>
                                 <Run Text="{Binding FilteredImageCount, Mode=OneWay}" FontWeight="SemiBold"/>
                                 <Run Text=" results"/>

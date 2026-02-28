@@ -16,7 +16,7 @@
         <StackPanel Grid.Row="0" Margin="20,16,20,8">
             <TextBlock Text="Screenshot Gallery" FontSize="18" FontWeight="SemiBold"/>
             <TextBlock Text="Captured images with timestamps" FontSize="12"
-                       Foreground="#888" Margin="0,4,0,0"/>
+                       Opacity="0.6" Margin="0,4,0,0"/>
         </StackPanel>
 
         <!-- Image Gallery -->
@@ -38,18 +38,17 @@
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border x:Name="CardBorder"
-                                            BorderThickness="1" BorderBrush="#E0E0E0"
-                                            CornerRadius="8" Margin="6" Padding="10"
-                                            Background="White">
+                                            BorderThickness="1"
+                                            CornerRadius="8" Margin="6" Padding="10">
                                         <StackPanel>
                                             <!-- Image Placeholder -->
                                             <Grid Height="140">
-                                                <Border Background="#F0F0F0" CornerRadius="4">
-                                                    <TextBlock Text="📷" FontSize="32"
-                                                               HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"
-                                                               Opacity="0.5"/>
-                                                </Border>
+                                                <Border CornerRadius="4" Opacity="0.08"
+                                                        Background="Gray"/>
+                                                <TextBlock Text="📷" FontSize="32"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Opacity="0.5"/>
                                                 <Image Source="{Binding ImageSource}"
                                                        Stretch="UniformToFill"
                                                        RenderOptions.BitmapScalingMode="HighQuality"
@@ -62,15 +61,14 @@
                                                        TextTrimming="CharacterEllipsis"
                                                        Margin="0,8,0,0"/>
                                             <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:MMM dd, yyyy HH:mm}'}"
-                                                       FontSize="11" Foreground="#666"
+                                                       FontSize="11" Opacity="0.6"
                                                        Margin="0,4,0,0"/>
                                         </StackPanel>
                                     </Border>
 
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="CardBorder" Property="BorderBrush" Value="#4A90D9"/>
-                                            <Setter TargetName="CardBorder" Property="Background" Value="#FAFCFF"/>
+                                            <Setter TargetName="CardBorder" Property="Opacity" Value="0.8"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
