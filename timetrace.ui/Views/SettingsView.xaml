@@ -13,6 +13,7 @@
         <Style x:Key="CardBorder" TargetType="Border">
             <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
             <Setter Property="Padding" Value="20"/>
             <Setter Property="Margin" Value="0,0,0,16"/>
         </Style>
@@ -61,9 +62,9 @@
 
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Margin="32,28,32,32" MaxWidth="800" HorizontalAlignment="Center">
+            <StackPanel Margin="24,20,24,24">
 
-                <!-- ==================== Page Header ==================== -->
+                <!-- Page Header -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                     <TextBlock Text="⚙️" FontSize="22" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <TextBlock Text="Settings" FontSize="22" FontWeight="Bold"
@@ -72,229 +73,231 @@
                 <TextBlock Text="Configure application capture and monitoring preferences"
                            FontSize="13"
                            Opacity="0.6"
-                           Margin="0,0,0,24"/>
+                           Margin="0,0,0,20"/>
 
-                <!-- ==================== Card 1 — Capture Settings ==================== -->
-                <Border Style="{StaticResource CardBorder}">
-                    <StackPanel>
-                        <TextBlock Text="Capture Settings" Style="{StaticResource CardTitle}"/>
-                        <TextBlock Text="Configure how and when screenshots are captured"
-                                   Style="{StaticResource CardDescription}"/>
+                <!-- Row 1: Capture + Monitoring -->
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <!-- Separator -->
-                        <Separator Margin="0,0,0,14"/>
+                    <!-- Card 1 — Capture Settings -->
+                    <Border Grid.Column="0" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Capture Settings" Style="{StaticResource CardTitle}"/>
+                            <TextBlock Text="Configure how and when screenshots are captured"
+                                       Style="{StaticResource CardDescription}"/>
+                            <Separator Margin="0,0,0,14"/>
 
-                        <!-- Automatic Capture -->
-                        <Grid Margin="0,0,0,18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Automatic Capture" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Automatically capture screenshots at regular intervals"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding AutoCapture}"
-                                      VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </Grid>
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Automatic Capture" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Capture screenshots at regular intervals"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding AutoCapture}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            </Grid>
 
-                        <!-- Capture Interval -->
-                        <Grid Margin="0,0,0,18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Capture Interval (minutes)" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Time between automatic screenshot captures"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <TextBox Grid.Column="1" Text="{Binding CaptureIntervalMinutes, UpdateSourceTrigger=PropertyChanged}"
-                                     MinWidth="80" VerticalAlignment="Center" HorizontalAlignment="Right"
-                                     Padding="8,6"/>
-                        </Grid>
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Capture Interval (min)" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Time between captures"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <TextBox Grid.Column="1" Text="{Binding CaptureIntervalMinutes, UpdateSourceTrigger=PropertyChanged}"
+                                         MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                         Padding="8,6"/>
+                            </Grid>
 
-                        <!-- Screenshot Quality -->
-                        <Grid Margin="0,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Screenshot Quality" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Quality level for captured screenshots"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <ComboBox Grid.Column="1"
-                                      ItemsSource="{Binding QualityOptions}"
-                                      SelectedItem="{Binding ScreenshotQuality}"
-                                      MinWidth="120" VerticalAlignment="Center" HorizontalAlignment="Right"
-                                      Padding="8,6"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-
-                <!-- ==================== Card 2 — Monitoring Settings ==================== -->
-                <Border Style="{StaticResource CardBorder}">
-                    <StackPanel>
-                        <TextBlock Text="Monitoring Settings" Style="{StaticResource CardTitle}"/>
-                        <TextBlock Text="Choose which applications to monitor"
-                                   Style="{StaticResource CardDescription}"/>
-
-                        <Separator Margin="0,0,0,14"/>
-
-                        <!-- Monitor All Applications -->
-                        <Grid Margin="0,0,0,18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Monitor All Applications" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Track activity across all running applications"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding MonitorAll}"
-                                      VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <!-- Include Background Apps -->
-                        <Grid Margin="0,0,0,18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Include Background Apps" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Also monitor applications running in the background"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding IncludeBackgroundApps}"
-                                      VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </Grid>
-
-                        <!-- Include System Apps -->
-                        <Grid Margin="0,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Include System Apps" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Include Windows system processes in monitoring"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding IncludeSystemApps}"
-                                      VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-
-                <!-- ==================== Card 3 — Storage Settings ==================== -->
-                <Border Style="{StaticResource CardBorder}">
-                    <StackPanel>
-                        <TextBlock Text="Storage Settings" Style="{StaticResource CardTitle}"/>
-                        <TextBlock Text="Manage screenshot storage and retention"
-                                   Style="{StaticResource CardDescription}"/>
-
-                        <Separator Margin="0,0,0,14"/>
-
-                        <!-- Storage Location -->
-                        <StackPanel Margin="0,0,0,18">
-                            <TextBlock Text="Storage Location" Style="{StaticResource SettingLabel}"/>
-                            <TextBlock Text="Directory where screenshots are saved"
-                                       Style="{StaticResource SettingDescription}" Margin="0,1,0,6"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0"
-                                         Text="{Binding StoragePath, UpdateSourceTrigger=PropertyChanged}"
-                                         VerticalAlignment="Center" Padding="8,6"/>
-                                <Button Grid.Column="1" Content="Browse"
-                                        Command="{Binding BrowseStoragePathCommand}"
-                                        Margin="8,0,0,0" Padding="14,6"
-                                        VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Screenshot Quality" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Quality level for captures"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <ComboBox Grid.Column="1"
+                                          ItemsSource="{Binding QualityOptions}"
+                                          SelectedItem="{Binding ScreenshotQuality}"
+                                          MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                          Padding="8,6"/>
                             </Grid>
                         </StackPanel>
+                    </Border>
 
-                        <!-- Retention Period -->
-                        <Grid Margin="0,0,0,18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Retention Period (days)" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Screenshots older than this will be automatically removed"
-                                           Style="{StaticResource SettingDescription}"/>
+                    <!-- Card 2 — Monitoring Settings -->
+                    <Border Grid.Column="2" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Monitoring Settings" Style="{StaticResource CardTitle}"/>
+                            <TextBlock Text="Choose which applications to monitor"
+                                       Style="{StaticResource CardDescription}"/>
+                            <Separator Margin="0,0,0,14"/>
+
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Monitor All Applications" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Track all running applications"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding MonitorAll}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Include Background Apps" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Monitor background applications"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding IncludeBackgroundApps}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Include System Apps" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Include Windows system processes"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding IncludeSystemApps}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Row 2: Storage + Notifications -->
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Card 3 — Storage Settings -->
+                    <Border Grid.Column="0" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Storage Settings" Style="{StaticResource CardTitle}"/>
+                            <TextBlock Text="Manage screenshot storage and retention"
+                                       Style="{StaticResource CardDescription}"/>
+                            <Separator Margin="0,0,0,14"/>
+
+                            <StackPanel Margin="0,0,0,18">
+                                <TextBlock Text="Storage Location" Style="{StaticResource SettingLabel}"/>
+                                <TextBlock Text="Directory where screenshots are saved"
+                                           Style="{StaticResource SettingDescription}" Margin="0,1,0,6"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding StoragePath, UpdateSourceTrigger=PropertyChanged}"
+                                             VerticalAlignment="Center" Padding="8,6"/>
+                                    <Button Grid.Column="1" Content="Browse"
+                                            Command="{Binding BrowseStoragePathCommand}"
+                                            Margin="8,0,0,0" Padding="14,6"
+                                            VerticalAlignment="Center"/>
+                                </Grid>
                             </StackPanel>
-                            <TextBox Grid.Column="1" Text="{Binding RetentionDays, UpdateSourceTrigger=PropertyChanged}"
-                                     MinWidth="80" VerticalAlignment="Center" HorizontalAlignment="Right"
-                                     Padding="8,6"/>
-                        </Grid>
 
-                        <!-- Compress Screenshots -->
-                        <Grid Margin="0,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Compress Screenshots" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Reduce file size of stored screenshots"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding CompressScreenshots}"
-                                      VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Retention Period (days)" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Auto-remove older screenshots"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <TextBox Grid.Column="1" Text="{Binding RetentionDays, UpdateSourceTrigger=PropertyChanged}"
+                                         MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                         Padding="8,6"/>
+                            </Grid>
 
-                <!-- ==================== Card 4 — Notifications ==================== -->
-                <Border Style="{StaticResource CardBorder}">
-                    <StackPanel>
-                        <TextBlock Text="Notifications" Style="{StaticResource CardTitle}"/>
-                        <TextBlock Text="Configure notification preferences"
-                                   Style="{StaticResource CardDescription}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Compress Screenshots" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Reduce file size of stored screenshots"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding CompressScreenshots}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
 
-                        <Separator Margin="0,0,0,14"/>
+                    <!-- Card 4 — Notifications -->
+                    <Border Grid.Column="2" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Notifications" Style="{StaticResource CardTitle}"/>
+                            <TextBlock Text="Configure notification preferences"
+                                       Style="{StaticResource CardDescription}"/>
+                            <Separator Margin="0,0,0,14"/>
 
-                        <!-- Notify on Screenshot Capture -->
-                        <Grid Margin="0,0,0,18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Notify on Screenshot Capture" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Show a notification each time a screenshot is captured"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding NotifyOnCapture}"
-                                      VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </Grid>
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Notify on Capture" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Show notification when a screenshot is taken"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding NotifyOnCapture}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            </Grid>
 
-                        <!-- Notify on New Application -->
-                        <Grid Margin="0,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                <TextBlock Text="Notify on New Application" Style="{StaticResource SettingLabel}"/>
-                                <TextBlock Text="Get notified when a new application is detected"
-                                           Style="{StaticResource SettingDescription}"/>
-                            </StackPanel>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding NotifyOnNewApp}"
-                                      VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Notify on New App" Style="{StaticResource SettingLabel}"/>
+                                    <TextBlock Text="Alert when a new application is detected"
+                                               Style="{StaticResource SettingDescription}"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding NotifyOnNewApp}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
 
-                <!-- ==================== Footer Buttons ==================== -->
+                <!-- Footer Buttons -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
                     <Button Content="Reset to Defaults"
                             Command="{Binding ResetToDefaultsCommand}"
