@@ -44,8 +44,13 @@
         <local:NavigationSidebar Grid.Column="0" DataContext="{Binding}"/>
 
         <!-- Main Content Area -->
-        <Border Grid.Column="1" Padding="0">
-            <ContentControl Content="{Binding CurrentView}"/>
+        <Border Grid.Column="1" Padding="0" ClipToBounds="True">
+            <ContentControl x:Name="MainContent" Content="{Binding CurrentView}"
+                            RenderTransformOrigin="0.5,0">
+                <ContentControl.RenderTransform>
+                    <TranslateTransform x:Name="ContentTranslate" Y="0"/>
+                </ContentControl.RenderTransform>
+            </ContentControl>
         </Border>
     </Grid>
 </Window>

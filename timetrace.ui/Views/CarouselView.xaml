@@ -30,14 +30,29 @@
             <!-- Row 0: Main Image Area -->
             <Border Grid.Row="0"
                     Background="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"
-                    CornerRadius="8" Margin="12,12,12,4">
+                    CornerRadius="8" Margin="12,12,12,4" ClipToBounds="True">
                 <Grid>
-                    <!-- Image + Placeholder -->
+                    <!-- Dual-image container for slide animation -->
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center"
-                          Margin="60,40">
-                        <Image Source="{Binding CurrentImage.ImageSource}"
+                          Margin="60,40" ClipToBounds="True">
+                        <!-- Old image (animated out by code-behind) -->
+                        <Image x:Name="OldImage"
                                Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               Opacity="0">
+                            <Image.RenderTransform>
+                                <TranslateTransform x:Name="OldImageTranslate" X="0"/>
+                            </Image.RenderTransform>
+                        </Image>
+                        <!-- Current image (animated in by code-behind) -->
+                        <Image x:Name="NewImage"
+                               Source="{Binding CurrentImage.ImageSource}"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality">
+                            <Image.RenderTransform>
+                                <TranslateTransform x:Name="NewImageTranslate" X="0"/>
+                            </Image.RenderTransform>
+                        </Image>
                         <!-- Placeholder when no image loaded -->
                         <TextBlock Text="📷" FontSize="64"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -179,13 +194,18 @@
                 </ListBox>
             </Border>
 
-            <!-- Row 2: Range Slider -->
+            <!-- Row 2: Range Slider with date tooltip -->
             <Border Grid.Row="2" Margin="12,0,12,12" Padding="8,4">
                 <Slider Minimum="0"
                         Maximum="{Binding FilteredImageCount}"
                         Value="{Binding CurrentIndex, Mode=TwoWay}"
-                        IsSnapToTickEnabled="True" TickFrequency="1"
-                        SmallChange="1" LargeChange="1"/>
+                        IsMoveToPointEnabled="True"
+                        SmallChange="1" LargeChange="1"
+                        AutoToolTipPlacement="TopLeft">
+                    <Slider.ToolTip>
+                        <ToolTip Content="{Binding CurrentImage.Timestamp, StringFormat='{}{0:MMM dd, yyyy  HH:mm:ss}'}"/>
+                    </Slider.ToolTip>
+                </Slider>
             </Border>
         </Grid>
 
