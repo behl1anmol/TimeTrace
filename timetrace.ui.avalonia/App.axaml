@@ -1,0 +1,200 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="timetrace.ui.avalonia.App"
+             xmlns:local="using:timetrace.ui.avalonia"
+             RequestedThemeVariant="Default">
+    <!-- Default = System theme detection for auto dark/light mode -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <!-- IMPORTANT: Resources MUST come before Styles so StaticResource references resolve -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://timetrace.ui.avalonia/Styles/Colors.axaml" />
+                <ResourceInclude Source="avares://timetrace.ui.avalonia/Styles/Controls.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- ═══════════════════════════════════════════════════════════════════════ -->
+            <!-- THEME-AWARE RESOURCES -->
+            <!-- ═══════════════════════════════════════════════════════════════════════ -->
+            <ResourceDictionary.ThemeDictionaries>
+                <!-- Light Theme -->
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ContentBackgroundBrush" Color="#F4F4F5"/>
+                    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="CardBorderBrush" Color="#E4E4E7"/>
+                    <SolidColorBrush x:Key="CardBorderHoverBrush" Color="#D4D4D8"/>
+                    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#18181B"/>
+                    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#52525B"/>
+                    <SolidColorBrush x:Key="TextMutedBrush" Color="#A1A1AA"/>
+                    <SolidColorBrush x:Key="DividerBrush" Color="#E4E4E7"/>
+                    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="InputBorderBrush" Color="#D4D4D8"/>
+                    <SolidColorBrush x:Key="FilterPanelBackgroundBrush" Color="#FAFAFA"/>
+                </ResourceDictionary>
+                
+                <!-- Dark Theme -->
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ContentBackgroundBrush" Color="#09090B"/>
+                    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#18181B"/>
+                    <SolidColorBrush x:Key="CardBorderBrush" Color="#27272A"/>
+                    <SolidColorBrush x:Key="CardBorderHoverBrush" Color="#3F3F46"/>
+                    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FAFAFA"/>
+                    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#A1A1AA"/>
+                    <SolidColorBrush x:Key="TextMutedBrush" Color="#71717A"/>
+                    <SolidColorBrush x:Key="DividerBrush" Color="#27272A"/>
+                    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#18181B"/>
+                    <SolidColorBrush x:Key="InputBorderBrush" Color="#3F3F46"/>
+                    <SolidColorBrush x:Key="FilterPanelBackgroundBrush" Color="#0F0F10"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+  
+    <Application.Styles>
+        <FluentTheme />
+        
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- SIDEBAR NAVIGATION BUTTON STYLES -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        
+        <!-- Default sidebar button -->
+        <Style Selector="Button.sidebarNav">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource SidebarTextBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        
+        <Style Selector="Button.sidebarNav:pointerover">
+            <Setter Property="Background" Value="{StaticResource SidebarHoverBrush}"/>
+        </Style>
+        
+        <Style Selector="Button.sidebarNav.selected">
+            <Setter Property="Background" Value="{StaticResource AccentPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- MODERN CARD STYLES -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        
+        <Style Selector="Border.card">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BoxShadow" Value="{StaticResource CardShadow}"/>
+        </Style>
+        
+        <Style Selector="Border.card:pointerover">
+            <Setter Property="BoxShadow" Value="{StaticResource CardShadowHover}"/>
+        </Style>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- STATUS BADGE STYLES -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        
+        <Style Selector="Border.statusBadge">
+            <Setter Property="CornerRadius" Value="9999"/>
+            <Setter Property="Padding" Value="10,4"/>
+        </Style>
+        
+        <Style Selector="Border.statusBadge.running">
+            <Setter Property="Background" Value="{StaticResource StatusRunningBackgroundBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.statusBadge.running TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource StatusRunningBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.statusBadge.idle">
+            <Setter Property="Background" Value="{StaticResource StatusIdleBackgroundBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.statusBadge.idle TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource StatusIdleBrush}"/>
+        </Style>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- BUTTON STYLES -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{StaticResource AccentPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        
+        <Style Selector="Button.primary:pointerover">
+            <Setter Property="Background" Value="{StaticResource AccentPrimaryHoverBrush}"/>
+        </Style>
+
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        
+        <Style Selector="Button.ghost">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- INPUT STYLES -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        
+        <Style Selector="TextBox.modern">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- TYPOGRAPHY -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        
+        <Style Selector="TextBlock.heading1">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        
+        <Style Selector="TextBlock.heading2">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        
+        <Style Selector="TextBlock.heading3">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        
+        <Style Selector="TextBlock.body">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        
+        <Style Selector="TextBlock.caption">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Opacity" Value="0.7"/>
+        </Style>
+        
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Opacity" Value="0.6"/>
+        </Style>
+    </Application.Styles>
+</Application>

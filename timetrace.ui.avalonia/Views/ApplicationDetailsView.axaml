@@ -1,0 +1,153 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:timetrace.ui.avalonia.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="using:timetrace.ui.avalonia.Views"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+             x:Class="timetrace.ui.avalonia.Views.ApplicationDetailsView"
+             x:DataType="vm:ApplicationDetailsViewModel">
+
+    <Design.DataContext>
+        <vm:ApplicationDetailsViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- HEADER -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource CardBorderBrush}"
+                BorderThickness="1"
+                Padding="20,16"
+                Margin="0,0,0,20"
+                CornerRadius="12">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <!-- Back Button & App Info -->
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <Button Name="BackButton"
+                            Classes="ghost"
+                            VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Viewbox Width="18" Height="18">
+                                <Path Data="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+                                      Fill="{DynamicResource TextSecondaryBrush}"
+                                      Stretch="Uniform"/>
+                            </Viewbox>
+                            <TextBlock Text="Back" 
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <!-- Divider -->
+                    <Border Width="1" Height="32" Background="{DynamicResource DividerBrush}"/>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="14" VerticalAlignment="Center">
+                        <Border Width="44" Height="44" 
+                                CornerRadius="10"
+                                Background="{StaticResource AccentPrimaryLightBrush}">
+                            <TextBlock Text="{Binding Application.Icon}" 
+                                       FontSize="22" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Application.ProcessName}" 
+                                       Classes="heading2"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Text="{Binding ImageCounter}" 
+                                       Classes="caption"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                
+                <!-- View Mode Toggle -->
+                <Border Grid.Column="2" 
+                        Background="{DynamicResource ContentBackgroundBrush}"
+                        CornerRadius="8"
+                        Padding="4">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <!-- Carousel Button -->
+                        <Button Command="{Binding SwitchToCarouselCommand}"
+                                Padding="12,8"
+                                CornerRadius="6"
+                                BorderThickness="0"
+                                Cursor="Hand">
+                            <Button.Styles>
+                                <Style Selector="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Style>
+                                <Style Selector="Button.active">
+                                    <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+                                </Style>
+                            </Button.Styles>
+                            <Classes.active>
+                                <Binding Path="IsCarouselMode"/>
+                            </Classes.active>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Viewbox Width="16" Height="16">
+                                    <Path Data="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"
+                                          Fill="{DynamicResource TextSecondaryBrush}"
+                                          Stretch="Uniform"/>
+                                </Viewbox>
+                                <TextBlock Text="Carousel" 
+                                           FontSize="13"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Grid Button -->
+                        <Button Command="{Binding SwitchToGridCommand}"
+                                Padding="12,8"
+                                CornerRadius="6"
+                                BorderThickness="0"
+                                Cursor="Hand">
+                            <Button.Styles>
+                                <Style Selector="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Style>
+                                <Style Selector="Button.active">
+                                    <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+                                </Style>
+                            </Button.Styles>
+                            <Classes.active>
+                                <Binding Path="IsGridMode"/>
+                            </Classes.active>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Viewbox Width="16" Height="16">
+                                    <Path Data="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"
+                                          Fill="{DynamicResource TextSecondaryBrush}"
+                                          Stretch="Uniform"/>
+                                </Viewbox>
+                                <TextBlock Text="Grid" 
+                                           FontSize="13"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- CONTENT AREA -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="1" ColumnDefinitions="280,*">
+            <!-- Filter Panel -->
+            <views:FilterView Grid.Column="0" DataContext="{Binding Filter}" Margin="0,0,20,0"/>
+            
+            <!-- Image Display Area -->
+            <Panel Grid.Column="1">
+                <!-- Carousel View -->
+                <views:CarouselView IsVisible="{Binding IsCarouselMode}" DataContext="{Binding}"/>
+                
+                <!-- Grid View (Presenter) -->
+                <views:PresenterView IsVisible="{Binding IsGridMode}" DataContext="{Binding}"/>
+            </Panel>
+        </Grid>
+    </Grid>
+
+</UserControl>

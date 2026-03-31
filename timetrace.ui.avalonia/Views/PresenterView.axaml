@@ -1,0 +1,84 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:timetrace.ui.avalonia.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="500"
+             x:Class="timetrace.ui.avalonia.Views.PresenterView"
+             x:DataType="vm:ApplicationDetailsViewModel">
+
+    <Design.DataContext>
+        <vm:ApplicationDetailsViewModel/>
+    </Design.DataContext>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding FilteredImages}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="vm:CapturedImageViewModel">
+                    <Button Command="{Binding $parent[ItemsControl].((vm:ApplicationDetailsViewModel)DataContext).SelectImageFromGridCommand}"
+                            CommandParameter="{Binding}"
+                            Margin="0,0,12,12"
+                            Padding="0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Border Width="200" Height="140"
+                                Background="{DynamicResource SystemChromeHighColor}"
+                                CornerRadius="10"
+                                ClipToBounds="True"
+                                BoxShadow="0 2 8 0 #20000000">
+                            <Border.Transitions>
+                                <Transitions>
+                                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+                                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.15"/>
+                                </Transitions>
+                            </Border.Transitions>
+                            
+                            <Grid RowDefinitions="*,Auto">
+                                <!-- Image Placeholder -->
+                                <Border Grid.Row="0" 
+                                        Background="#20808080"
+                                        Margin="8,8,8,4">
+                                    <TextBlock Text="📷" FontSize="32" 
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"
+                                               Opacity="0.4"/>
+                                </Border>
+                                
+                                <!-- Info Footer -->
+                                <Border Grid.Row="1" 
+                                        Padding="10,6"
+                                        Background="#10000000">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding FileName}"
+                                                       FontSize="11"
+                                                       FontWeight="Medium"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding FormattedTimestamp}"
+                                                       FontSize="10"
+                                                       Opacity="0.6"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding FileSize}"
+                                                   FontSize="10"
+                                                   Opacity="0.5"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+
+</UserControl>

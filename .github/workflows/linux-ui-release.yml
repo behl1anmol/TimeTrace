@@ -1,0 +1,212 @@
+name: TimeTrace Linux UI Build & Release
+
+# Manual trigger only - this is a pre-release alpha
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 0.1.0-alpha.1)'
+        required: true
+        default: '0.1.0-alpha.1'
+      create_release:
+        description: 'Create GitHub release'
+        type: boolean
+        default: false
+      release_notes:
+        description: 'Release notes (optional)'
+        required: false
+        default: 'Pre-release alpha build for testing'
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  PROJECT_PATH: 'timetrace.ui.avalonia/timetrace.ui.avalonia.csproj'
+  SOLUTION_PATH: 'TimeTrace.sln'
+
+jobs:
+  build-linux:
+    name: Build Linux (${{ matrix.arch }})
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        arch: [linux-x64, linux-arm64]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+      - name: Run tests
+        run: dotnet test ${{ env.SOLUTION_PATH }} -c Release --no-build --verbosity normal
+
+      - name: Publish self-contained
+        run: |
+          dotnet publish ${{ env.PROJECT_PATH }} \
+            -c Release \
+            -r ${{ matrix.arch }} \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ github.event.inputs.version }} \
+            -o ./publish/${{ matrix.arch }}
+
+      - name: Create archive
+        run: |
+          cd ./publish/${{ matrix.arch }}
+          tar -czvf ../../TimeTrace-Linux-${{ matrix.arch }}-${{ github.event.inputs.version }}.tar.gz *
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TimeTrace-Linux-${{ matrix.arch }}
+          path: TimeTrace-Linux-${{ matrix.arch }}-${{ github.event.inputs.version }}.tar.gz
+          retention-days: 30
+
+  create-appimage:
+    name: Create AppImage (x64)
+    runs-on: ubuntu-latest
+    needs: build-linux
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish for AppImage
+        run: |
+          dotnet publish ${{ env.PROJECT_PATH }} \
+            -c Release \
+            -r linux-x64 \
+            --self-contained true \
+            -p:PublishSingleFile=false \
+            -p:Version=${{ github.event.inputs.version }} \
+            -o ./AppDir/usr/bin
+
+      - name: Prepare AppDir structure
+        run: |
+          mkdir -p ./AppDir/usr/share/applications
+          mkdir -p ./AppDir/usr/share/icons/hicolor/256x256/apps
+          
+          # Create desktop entry
+          cat > ./AppDir/usr/share/applications/timetrace.desktop << EOF
+          [Desktop Entry]
+          Name=TimeTrace
+          Comment=Application time tracking and screenshot capture
+          Exec=timetrace.ui.avalonia
+          Icon=timetrace
+          Type=Application
+          Categories=Utility;
+          Terminal=false
+          EOF
+          
+          # Copy icon (using placeholder if not exists)
+          if [ -f "timetrace.ui.avalonia/Assets/timeTrace.ico" ]; then
+            # Convert ICO to PNG if ImageMagick available
+            cp timetrace.ui.avalonia/Assets/timeTrace.ico ./AppDir/usr/share/icons/hicolor/256x256/apps/timetrace.png 2>/dev/null || \
+            echo "Icon conversion skipped"
+          fi
+          
+          # Create AppRun
+          cat > ./AppDir/AppRun << 'EOF'
+          #!/bin/bash
+          HERE="$(dirname "$(readlink -f "${0}")")"
+          export PATH="${HERE}/usr/bin:${PATH}"
+          export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH}"
+          exec "${HERE}/usr/bin/timetrace.ui.avalonia" "$@"
+          EOF
+          chmod +x ./AppDir/AppRun
+
+      - name: Download appimagetool
+        run: |
+          wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+
+      - name: Create AppImage
+        run: |
+          ARCH=x86_64 ./appimagetool-x86_64.AppImage --appimage-extract-and-run ./AppDir TimeTrace-${{ github.event.inputs.version }}-x86_64.AppImage
+
+      - name: Upload AppImage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TimeTrace-AppImage
+          path: TimeTrace-${{ github.event.inputs.version }}-x86_64.AppImage
+          retention-days: 30
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build-linux, create-appimage]
+    if: ${{ github.event.inputs.create_release == 'true' }}
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: List artifacts
+        run: find ./artifacts -type f
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          name: TimeTrace Linux UI v${{ github.event.inputs.version }}
+          body: |
+            ## TimeTrace Linux UI - Pre-release Alpha
+            
+            ${{ github.event.inputs.release_notes }}
+            
+            ### Downloads
+            - **AppImage** (recommended): Universal Linux package, no installation required
+            - **tar.gz (x64)**: Self-contained binary for x86_64 Linux
+            - **tar.gz (arm64)**: Self-contained binary for ARM64 Linux
+            
+            ### Requirements
+            - Linux with X11 or Wayland display server
+            - No additional dependencies (self-contained)
+            
+            ### Installation
+            
+            **AppImage:**
+            ```bash
+            chmod +x TimeTrace-*.AppImage
+            ./TimeTrace-*.AppImage
+            ```
+            
+            **tar.gz:**
+            ```bash
+            tar -xzf TimeTrace-Linux-*.tar.gz
+            ./timetrace.ui.avalonia
+            ```
+            
+            ### ⚠️ Alpha Notice
+            This is a pre-release alpha version for testing purposes only.
+            Please report issues at: https://github.com/${{ github.repository }}/issues
+          draft: true
+          prerelease: true
+          files: |
+            ./artifacts/**/*.tar.gz
+            ./artifacts/**/*.AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

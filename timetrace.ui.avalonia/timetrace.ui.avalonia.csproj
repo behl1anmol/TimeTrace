@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <RuntimeIdentifiers>linux-x64;linux-arm64</RuntimeIdentifiers>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>Assets\timeTrace.ico</ApplicationIcon>
+    <RootNamespace>timetrace.ui.avalonia</RootNamespace>
+    
+    <!-- Publishing settings -->
+    <AssemblyName>timetrace.ui.avalonia</AssemblyName>
+    <Product>TimeTrace</Product>
+    <Description>TimeTrace - Application time tracking and screenshot capture for Linux</Description>
+    <Authors>TimeTrace Contributors</Authors>
+    
+    <!-- Self-contained publishing optimizations -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+    <Folder Include="Converters\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Styles\" />
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.*" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.*" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.*" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.*" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\timetrace.library\timetrace.library.csproj" />
+    <ProjectReference Include="..\TimeTrace.Platform.Abstractions\TimeTrace.Platform.Abstractions.csproj" />
+    <ProjectReference Include="..\TimeTrace.Platform.Linux\TimeTrace.Platform.Linux.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:timetrace.ui.avalonia.Controls"
+             x:Class="timetrace.ui.avalonia.Controls.BusyIndicator"
+             x:DataType="controls:BusyIndicator">
+    
+    <Border Background="{DynamicResource SurfaceBrush}"
+            CornerRadius="12"
+            Padding="24"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsVisible="{Binding IsActive}">
+        <StackPanel Spacing="12" HorizontalAlignment="Center">
+            <!-- Simple loading dots -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                <Ellipse Width="12" Height="12" Fill="{DynamicResource AccentBrush}" Opacity="0.3"/>
+                <Ellipse Width="12" Height="12" Fill="{DynamicResource AccentBrush}" Opacity="0.5"/>
+                <Ellipse Width="12" Height="12" Fill="{DynamicResource AccentBrush}" Opacity="0.7"/>
+                <Ellipse Width="12" Height="12" Fill="{DynamicResource AccentBrush}" Opacity="1.0"/>
+            </StackPanel>
+            
+            <TextBlock Text="{Binding Message, FallbackValue='Loading...'}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       FontSize="14"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,246 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:timetrace.ui.avalonia.ViewModels"
+             xmlns:controls="using:timetrace.ui.avalonia.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             x:Class="timetrace.ui.avalonia.Views.ApplicationListView"
+             x:DataType="vm:ApplicationListViewModel">
+
+    <Design.DataContext>
+        <vm:ApplicationListViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- HEADER -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,32">
+            <StackPanel>
+                <TextBlock Text="Currently Running Applications" 
+                           Classes="heading1"
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock Text="Click on any application to view captured screenshots"
+                           Classes="body muted"
+                           Margin="0,6,0,0"/>
+            </StackPanel>
+            
+            <Button Grid.Column="1" 
+                    Command="{Binding RefreshCommand}"
+                    Classes="secondary"
+                    VerticalAlignment="Center"
+                    BorderBrush="{DynamicResource CardBorderBrush}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Viewbox Width="16" Height="16">
+                        <Path Data="M17.65 6.35A7.958 7.958 0 0 0 12 4a8 8 0 0 0-8 8 8 8 0 0 0 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+                              Fill="{DynamicResource TextSecondaryBrush}"
+                              Stretch="Uniform"/>
+                    </Viewbox>
+                    <TextBlock Text="Refresh" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- LOADING STATE -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <controls:BusyIndicator Grid.Row="1"
+                                IsActive="{Binding IsLoading}"
+                                Message="Loading applications..."
+                                IsVisible="{Binding IsLoading}"/>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- EMPTY STATE -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <Border Grid.Row="1"
+                IsVisible="{Binding IsEmpty}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <StackPanel Spacing="16" HorizontalAlignment="Center">
+                <Viewbox Width="64" Height="64" Opacity="0.4">
+                    <Path Data="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v12h16V6H4z"
+                          Fill="{DynamicResource TextMutedBrush}"
+                          Stretch="Uniform"/>
+                </Viewbox>
+                <TextBlock Text="No applications found"
+                           Classes="heading2"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock Text="Start running some applications to see them here"
+                           Classes="body muted"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- ERROR STATE -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <Border Grid.Row="1"
+                IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{StaticResource StatusErrorBackgroundBrush}"
+                CornerRadius="12"
+                Padding="32">
+            <StackPanel Spacing="16" HorizontalAlignment="Center">
+                <Viewbox Width="40" Height="40">
+                    <Path Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                          Fill="{StaticResource StatusErrorBrush}"
+                          Stretch="Uniform"/>
+                </Viewbox>
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="{StaticResource StatusErrorBrush}"
+                           TextWrapping="Wrap"
+                           MaxWidth="400"
+                           HorizontalAlignment="Center"/>
+                <Button Content="Retry" 
+                        Command="{Binding RefreshCommand}"
+                        Classes="primary"
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <!-- APPLICATION CARDS GRID -->
+        <!-- ═══════════════════════════════════════════════════════════════════════ -->
+        <ScrollViewer Grid.Row="1" 
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto"
+                      IsVisible="{Binding !IsLoading}">
+            <ItemsControl ItemsSource="{Binding Applications}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="vm:ApplicationItemViewModel">
+                        <!-- Clickable Card -->
+                        <Button Command="{Binding $parent[ItemsControl].((vm:ApplicationListViewModel)DataContext).SelectApplicationCommand}"
+                                CommandParameter="{Binding}"
+                                Margin="0,0,20,20"
+                                Padding="0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand">
+                            
+                            <Border Width="340"
+                                    Background="{DynamicResource CardBackgroundBrush}"
+                                    BorderBrush="{DynamicResource CardBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
+                                    Padding="20">
+                                <Border.Transitions>
+                                    <Transitions>
+                                        <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.2"/>
+                                        <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                                    </Transitions>
+                                </Border.Transitions>
+                                
+                                <Grid RowDefinitions="Auto,Auto,16,Auto">
+                                    
+                                    <!-- Row 0: Icon, Name, Status Badge, Chevron -->
+                                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+                                        
+                                        <!-- App Icon -->
+                                        <Border Width="48" Height="48" 
+                                                CornerRadius="10"
+                                                Background="{StaticResource AccentPrimaryLightBrush}"
+                                                Margin="0,0,14,0">
+                                            <TextBlock Text="{Binding Icon}" 
+                                                       FontSize="22" 
+                                                       HorizontalAlignment="Center" 
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                        
+                                        <!-- Process Name -->
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding ProcessName}"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        
+                                        <!-- Status Badge -->
+                                        <Border Grid.Column="2" 
+                                                Classes="statusBadge"
+                                                Classes.running="{Binding IsRunning}"
+                                                Classes.idle="{Binding !IsRunning}"
+                                                Margin="8,0,0,0"
+                                                VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <Viewbox Width="10" Height="10">
+                                                    <Path Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
+                                                          Stretch="Uniform">
+                                                        <Path.Fill>
+                                                            <SolidColorBrush Color="{Binding StatusColor}"/>
+                                                        </Path.Fill>
+                                                    </Path>
+                                                </Viewbox>
+                                                <TextBlock Text="{Binding Status}"
+                                                           FontSize="11"
+                                                           FontWeight="SemiBold"/>
+                                            </StackPanel>
+                                        </Border>
+                                        
+                                        <!-- Chevron Right -->
+                                        <Viewbox Grid.Column="3" Width="20" Height="20" Margin="12,0,0,0" Opacity="0.4">
+                                            <Path Data="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+                                                  Fill="{DynamicResource TextMutedBrush}"
+                                                  Stretch="Uniform"/>
+                                        </Viewbox>
+                                    </Grid>
+                                    
+                                    <!-- Row 1: Divider -->
+                                    <Border Grid.Row="2" 
+                                            Height="1" 
+                                            Background="{DynamicResource DividerBrush}"
+                                            Margin="0,0,0,0"/>
+                                    
+                                    <!-- Row 2: Stats (Memory + Screenshots) -->
+                                    <Grid Grid.Row="3" ColumnDefinitions="*,*">
+                                        
+                                        <!-- Memory Usage -->
+                                        <StackPanel>
+                                            <TextBlock Text="Memory Usage"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource TextMutedBrush}"/>
+                                            <TextBlock Text="{Binding MemoryUsage}"
+                                                       FontSize="16"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                                       Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Screenshots -->
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Screenshots"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource TextMutedBrush}"/>
+                                            <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,4,0,0">
+                                                <Viewbox Width="18" Height="18" Opacity="0.7">
+                                                    <Path Data="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"
+                                                          Fill="{DynamicResource TextSecondaryBrush}"
+                                                          Stretch="Uniform"/>
+                                                </Viewbox>
+                                                <TextBlock Text="{Binding ScreenshotCount}"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+
+</UserControl>

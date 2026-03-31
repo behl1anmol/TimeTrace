@@ -1,0 +1,135 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:timetrace.ui.avalonia.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="500"
+             x:Class="timetrace.ui.avalonia.Views.CarouselView"
+             x:DataType="vm:ApplicationDetailsViewModel">
+
+    <Design.DataContext>
+        <vm:ApplicationDetailsViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Main Image Display -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource SystemChromeHighColor}"
+                CornerRadius="12"
+                Margin="0,0,0,16"
+                ClipToBounds="True">
+            <Grid>
+                <!-- Image Placeholder (will show actual image when backend integrates) -->
+                <Border Background="#20808080"
+                        CornerRadius="8"
+                        Margin="20">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12">
+                        <TextBlock Text="📷" FontSize="64" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentImage.FileName}" 
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentImage.FormattedTimestamp}"
+                                   FontSize="13"
+                                   Opacity="0.7"
+                                   HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding CurrentImage.Resolution}" FontSize="12" Opacity="0.6"/>
+                            <TextBlock Text="•" FontSize="12" Opacity="0.6"/>
+                            <TextBlock Text="{Binding CurrentImage.FileSize}" FontSize="12" Opacity="0.6"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Navigation Arrows -->
+                <Button Command="{Binding PreviousImageCommand}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="20,0"
+                        Width="48" Height="48"
+                        CornerRadius="24"
+                        Padding="0"
+                        Background="#80000000">
+                    <TextBlock Text="◀" FontSize="20" Foreground="White" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+
+                <Button Command="{Binding NextImageCommand}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="20,0"
+                        Width="48" Height="48"
+                        CornerRadius="24"
+                        Padding="0"
+                        Background="#80000000">
+                    <TextBlock Text="▶" FontSize="20" Foreground="White" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+
+                <!-- Image Counter Badge -->
+                <Border Background="#80000000"
+                        CornerRadius="16"
+                        Padding="12,6"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,0,20">
+                    <TextBlock Text="{Binding ImageCounter}" 
+                               Foreground="White"
+                               FontWeight="Medium"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Thumbnail Strip -->
+        <ScrollViewer Grid.Row="1" 
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Disabled"
+                      Height="100">
+            <ItemsControl ItemsSource="{Binding FilteredImages}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="8"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="vm:CapturedImageViewModel">
+                        <Button Command="{Binding $parent[ItemsControl].((vm:ApplicationDetailsViewModel)DataContext).GoToImageCommand}"
+                                CommandParameter="{Binding $parent[ContentPresenter].((vm:CapturedImageViewModel)DataContext).Id}"
+                                Padding="0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand">
+                            <Border Width="120" Height="80"
+                                    CornerRadius="8"
+                                    Background="{DynamicResource SystemChromeHighColor}"
+                                    ClipToBounds="True">
+                                <Grid>
+                                    <!-- Thumbnail Placeholder -->
+                                    <Border Background="#30808080" CornerRadius="8">
+                                        <TextBlock Text="📷" FontSize="24" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   Opacity="0.5"/>
+                                    </Border>
+                                    
+                                    <!-- Timestamp overlay -->
+                                    <Border Background="#80000000"
+                                            CornerRadius="0,0,8,8"
+                                            VerticalAlignment="Bottom"
+                                            Padding="6,3">
+                                        <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:HH:mm}'}"
+                                                   FontSize="10"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+
+</UserControl>
