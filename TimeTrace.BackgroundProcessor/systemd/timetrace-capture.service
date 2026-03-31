@@ -1,0 +1,26 @@
+[Unit]
+Description=TimeTrace Screenshot Capture Service
+Documentation=https://github.com/yourusername/TimeTrace
+After=graphical-session.target
+
+[Service]
+Type=notify
+ExecStart=%h/.local/bin/timetrace-capture
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=10
+Environment=DOTNET_ENVIRONMENT=Production
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=timetrace-capture
+
+# Security hardening (optional but recommended)
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/share/timetrace
+
+[Install]
+WantedBy=default.target

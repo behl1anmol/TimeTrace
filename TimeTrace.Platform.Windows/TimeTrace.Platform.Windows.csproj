@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>Windows platform implementation for TimeTrace background processor. Provides screenshot capture and active window detection for Windows desktop.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TimeTrace.Platform.Abstractions\TimeTrace.Platform.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
