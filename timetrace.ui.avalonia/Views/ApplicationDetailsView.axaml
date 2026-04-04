@@ -145,7 +145,7 @@
                 <views:CarouselView IsVisible="{Binding IsCarouselMode}" DataContext="{Binding}"/>
                 
                 <!-- Grid View (Presenter) -->
-                <views:PresenterView IsVisible="{Binding IsGridMode}" DataContext="{Binding}"/>
+                <views:GridView IsVisible="{Binding IsGridMode}" DataContext="{Binding}"/>
             </Panel>
         </Grid>
     </Grid>
