@@ -142,10 +142,10 @@
             <!-- Image Display Area -->
             <Panel Grid.Column="1">
                 <!-- Carousel View -->
-                <views:CarouselView IsVisible="{Binding IsCarouselMode}" DataContext="{Binding}"/>
+                <views:CarouselView IsVisible="{Binding IsCarouselMode}" />
                 
                 <!-- Grid View (Presenter) -->
-                <views:GridView IsVisible="{Binding IsGridMode}" DataContext="{Binding}"/>
+                <views:GridView IsVisible="{Binding IsGridMode}" />
             </Panel>
         </Grid>
     </Grid>
